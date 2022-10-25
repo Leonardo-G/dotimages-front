@@ -7,6 +7,7 @@ const ContainerImage = styled.div`
     position: relative;
     height: ${({height}: { height: string }) => height };
     width: 100%;
+    filter: brightness(85%)
 `
 
 interface Props {

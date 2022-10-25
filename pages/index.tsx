@@ -1,9 +1,12 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import styled from 'styled-components'
+
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { LayoutPage } from '../components/layout/LayoutPage'
 import { Portada } from '../components/UI/Portada'
+import { Images } from '../components/media/Images'
 
 const PosInitial = styled.div`
   position: relative;
@@ -43,6 +46,7 @@ const InputSearch = styled.input`
 `
 
 const HomePage = () => {
+
     return (
         <LayoutPage title='DOTimages'>
             <PosInitial>
@@ -59,6 +63,7 @@ const HomePage = () => {
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
+              <Images />
         </LayoutPage>
     )
 }

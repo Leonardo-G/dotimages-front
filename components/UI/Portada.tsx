@@ -7,13 +7,13 @@ const ContainerImage = styled.div`
     position: relative;
     height: ${({height}: { height: string }) => height };
     width: 100%;
-    filter: brightness(85%)
+    filter: brightness(85%);
 `
 
 interface Props {
     height: string; // En Pixeles
     image: string;
-    description?: string
+    description?: string;
 }
 
 export const Portada:FC<Props> = ({ height, image, description }) => {

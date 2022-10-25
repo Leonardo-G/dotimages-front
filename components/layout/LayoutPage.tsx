@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React, { FC, ReactNode } from 'react';
+import { Nav } from '../UI/Nav';
 
 interface Props {
     children: ReactNode;
@@ -12,7 +13,7 @@ export const LayoutPage: FC<Props> = ({ children, title }) => {
             <Head>
                 <title> { title } </title>
             </Head>
-            <header></header>
+            <Nav />
             <main>
                 { children }
             </main>

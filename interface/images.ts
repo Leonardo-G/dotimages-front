@@ -1,10 +1,10 @@
 export interface InterfaceImages {
     total:     number;
     totalHits: number;
-    hits:      Image[];
+    hits:      InterfaceImage[];
 }
 
-export interface Image {
+export interface InterfaceImage {
     id:              number;
     pageURL:         string;
     type:            string;

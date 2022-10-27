@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useState } from 'react'
-import { fetchApi } from '../../utils/fetchApi'
-import { InterfaceImages, Image } from '../../interface/images';
-import { ImageSize } from './ImageSize';
+import React, { FC } from 'react';
+
 import styled from 'styled-components';
+
+import { ImageSize } from './ImageSize';
 import { Container } from '../../styled/globals';
+import { InterfaceImage } from '../../interface/images';
 
 const Section = styled.section`
     margin-top: 50px;
@@ -11,34 +12,18 @@ const Section = styled.section`
     justify-content: space-between;
 `
 
-export const Images: FC = () => {
+interface Props {
+    media: InterfaceImage[];
+}
 
-    const [medias, setMedias] = useState([] as Image[]);
-    const [medias2, setMedias2] = useState([] as Image[]);
-    const [medias3, setMedias3] = useState([] as Image[]);
-
-    const getMedias = async ( ) => {
-        const mediasAPI = await fetchApi("order=popular&per_page=60&safesearch=true");
-
-        setMedias( mediasAPI.hits.filter( (m, idx )=> idx >= 0 && idx < 20 ) );
-        setMedias2( mediasAPI.hits.filter( (m, idx )=> idx >= 20 && idx < 40 ) );
-        setMedias3( mediasAPI.hits.filter( (m, idx )=> idx >= 40 && idx < 60 ) );
-    }
-
-    useEffect(() => {
-
-        getMedias()
-            .catch( err => console.log(err))
-    }, [])
+export const Images: FC<Props> = ({ media }) => {
 
     return (
         <Container className='container'>
             <Section>
                 <div>
-                    {
-                        medias.length > 0 &&
-                        
-                        medias.map( i => (
+                    {                        
+                        media.filter(( m, idx) => idx >= 0 && idx < 20 ).map( i => (
                             <ImageSize 
                                 src={ i.webformatURL } 
                                 description={ i.tags } 
@@ -51,9 +36,7 @@ export const Images: FC = () => {
                 </div>
                 <div>
                     {
-                        medias2.length > 0 &&
-                        
-                        medias2.map( i => (
+                        media.filter(( m, idx) => idx >= 20 && idx < 40 ).map( i => (
                             <ImageSize 
                                 src={ i.webformatURL } 
                                 description={ i.tags } 
@@ -65,10 +48,8 @@ export const Images: FC = () => {
                     }
                 </div>
                 <div>
-                    {
-                        medias3.length > 0 &&
-                        
-                        medias3.map( i => (
+                    {                        
+                        media.filter(( m, idx) => idx >= 40 && idx < 60 ).map( i => (
                             <ImageSize 
                                 src={ i.webformatURL } 
                                 description={ i.tags } 

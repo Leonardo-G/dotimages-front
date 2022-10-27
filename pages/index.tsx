@@ -1,5 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
+import { GetStaticProps, NextPage } from 'next'
+import Link from 'next/link'
 
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,45 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { LayoutPage } from '../components/layout/LayoutPage'
 import { Portada } from '../components/UI/Portada'
 import { Images } from '../components/media/Images'
+import { fetchApi } from '../utils/fetchApi'
+import { PosCenter, PosInitial, BarraBusqueda, InputSearch } from '../styled/pages/home';
+import { InterfaceImages } from '../interface/images'
 
-const PosInitial = styled.div`
-  position: relative;
-  height: 630px;
-`
+interface Props {
+    data: InterfaceImages;
+}
 
-const PosCenter = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  h1{
-    width: 50%
-  }
-`
+const HomePage: NextPage<Props> = ({ data }) => {
 
-const BarraBusqueda = styled.div`
-  position: relative;
-  margin-left: 50px;
-  background: #222C40;
-  width: 400px;
-  padding: 10px 20px;
-  border-radius: 50px;
-  display: flex;
-  column-gap: 20px;
-`
-
-const InputSearch = styled.input`
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-size: 16px;
-`
-
-const HomePage = () => {
+    const [search, setSearch] = useState("");
 
     return (
         <LayoutPage title='DOTimages'>
@@ -58,14 +31,32 @@ const HomePage = () => {
                 <PosCenter>
                     <h1>Imagenes para tus proyectos GRATIS!</h1>
                     <BarraBusqueda>
-                        <FontAwesomeIcon icon={ faMagnifyingGlass }/>
-                        <InputSearch />
+                        <Link href={`/images/q=${ search }`} passHref>
+                            <FontAwesomeIcon icon={ faMagnifyingGlass }/>
+                        </Link>
+                        <InputSearch 
+                            type="text"
+                            placeholder="Buscar... Ejemplo: Pelota"
+                            value={ search }
+                            onChange={ ( e ) => setSearch( e.target.value ) }
+                        />
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
-              <Images />
+            <Images media={ data.hits }/>
         </LayoutPage>
     )
+}
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+
+    const data = await fetchApi("order=popular&per_page=60&safesearch=true");
+
+    return {
+        props: {
+            data
+        }
+    }
 }
 
 export default HomePage

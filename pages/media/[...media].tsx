@@ -1,14 +1,16 @@
 import React from 'react'
 import { NextPage, GetServerSideProps } from 'next'
+import Image from 'next/image';
+
+import styled from 'styled-components';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+
 import { fetchApi } from '../../utils/fetchApi';
 import { InterfaceImages } from '../../interface/images';
 import { LayoutPage } from '../../components/layout/LayoutPage';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components';
 import { Container } from '../../styled/globals';
-import Image from 'next/image';
 
 interface Props {
     data: InterfaceImages;
@@ -120,6 +122,7 @@ const MediaPage: NextPage<Props> = ({ data: { hits } }) => {
                                     src={ hits[0].userImageURL }
                                     layout="fill"
                                     objectFit='cover'
+                                    alt="Imagen"
                                 />
                             </ImageUser>
                             <p>{ hits[0].user }</p>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 import styled from "styled-components";
 
@@ -27,6 +28,7 @@ const Navigation = styled.nav`
 `
 const Enlace = styled.a`
     padding: 15px 10px;
+    cursor: pointer;
 `
 
 const BtnRegistro = styled.a`
@@ -48,10 +50,18 @@ export const Nav = () => {
                 <Navigation>
                     <Brand>DOT<span>Images</span></Brand>
                     <div>
-                        <Enlace href="">Imágenes</Enlace>
-                        <Enlace href="">Videos</Enlace>
-                        <Enlace href="">Gifs</Enlace>
-                        <Enlace href="">Stickers</Enlace>
+                        <Link href="/">
+                            <Enlace>Imágenes</Enlace>
+                        </Link>
+                        <Link href="/videos">
+                            <Enlace>Videos</Enlace>
+                        </Link>
+                        <Link href="/gifs">
+                            <Enlace>Gifs</Enlace>
+                        </Link>
+                        <Link href="/stickers">
+                            <Enlace href="">Stickers</Enlace>
+                        </Link>
                     </div>
                     <div>
                         <Enlace href="">Iniciar Sesión</Enlace>

@@ -25,7 +25,8 @@ const HomePage: NextPage<Props> = ({ data }) => {
             <PosInitial>
                 <Portada 
                     height='630px'
-                    image='/portada.png'
+                    media='/portada.png'
+                    type="image"
                     description='Imagen Portada'
                 />
                 <PosCenter>
@@ -43,7 +44,10 @@ const HomePage: NextPage<Props> = ({ data }) => {
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
-            <Images media={ data.hits }/>
+            <Images 
+                media={ data.hits }
+                type="image"    
+            />
         </LayoutPage>
     )
 }

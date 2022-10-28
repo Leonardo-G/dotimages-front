@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
+import Link from 'next/link';
 import { GetServerSideProps, NextPage } from 'next'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { LayoutPage } from '../../components/layout/LayoutPage';
 import { fetchApi } from '../../utils/fetchApi';
@@ -7,9 +11,6 @@ import { InterfaceImages } from '../../interface/images';
 import { Images } from '../../components/media/Images';
 import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/pages/home';
 import { Portada } from '../../components/UI/Portada';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 interface Props{
     data: InterfaceImages;
@@ -22,11 +23,12 @@ const ImagesSearch: NextPage<Props> = ({ data, search }) => {
 
     return (
         <LayoutPage title='DOTImages'>
-          <PosInitial>
-                <Portada 
+            <PosInitial>
+                <Portada
                     height='630px'
-                    image='/portada.png'
+                    media='/portada.png'
                     description='Imagen Portada'
+                    type="image"
                 />
                 <PosCenter>
                     <h1>Imagenes para tus proyectos GRATIS!</h1>
@@ -43,7 +45,10 @@ const ImagesSearch: NextPage<Props> = ({ data, search }) => {
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
-            <Images media={ data.hits }/>
+            <Images 
+                media={ data.hits }
+                type="image"    
+            />
         </LayoutPage>
     )
 }

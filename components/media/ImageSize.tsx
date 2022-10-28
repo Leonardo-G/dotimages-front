@@ -1,9 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, LegacyRef, MutableRefObject, RefObject, useRef } from 'react'
 import Link from 'next/link';
 
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
 import { BtnIcono, Iconos, ImageContainer } from '../../styled/ImageSize';
 
 interface Props {
@@ -11,18 +12,54 @@ interface Props {
     description: string;
     tags: string;
     id: number;
+    type: "image" | "videos";
 }
 
-export const ImageSize: FC<Props> = ({ src, description, tags, id }) => {
+export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
+
+    const video = useRef<HTMLVideoElement>()
+
+    const handleHover = async (  ) => {
+        setTimeout(() => {
+            video.current && video.current.play();
+            
+        }, 0);
+        
+    }
+
+    const handleLeaveHover = async (  ) => {
+        video.current && video.current.pause();
+    }
+
     return (
-            <ImageContainer>
-                <img
-                    style={{
-                        width: "380px"
-                    }}
-                    src={ src }
-                    alt={ description }
-                />
+            <ImageContainer 
+                onMouseOver={ handleHover }
+                onMouseLeave={ handleLeaveHover }
+            >
+
+                {
+                    type === "image" ?
+                    <img
+                        style={{
+                            width: "380px",
+                        }}
+                        src={ src }
+                        alt={ description }
+                    />
+
+                    :
+
+                    <video
+                        ref={ video }
+                        style={{
+                            width: "380px",
+                            objectFit: "contain"
+                        }}
+                        src={ src }
+                        muted
+                        loop
+                    ></video>
+                }
                 <div className='headerImage'>
                     <div>
                         <p>{ tags }</p>
@@ -37,7 +74,7 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id }) => {
                     </Iconos>
                 </div>
                 <Link 
-                    href={ `/media/image/${ id }` }
+                    href={ `/media/${ type }/${ id }` }
                     passHref
                 >
                     <a className='zoom'>

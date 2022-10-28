@@ -12,15 +12,31 @@ const ContainerImage = styled.div`
 
 interface Props {
     height: string; // En Pixeles
-    image: string;
+    media: string;
+    type: "image" | "video";
     description?: string;
 }
 
-export const Portada:FC<Props> = ({ height, image, description }) => {
+export const Portada:FC<Props> = ({ height, media, description, type }) => {
+
+    if ( type === "video" ) {
+        return (
+            <ContainerImage height={ height }>
+                <video 
+                    src={ media }
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    autoPlay
+                    muted
+                    loop
+                ></video>
+            </ContainerImage>
+        )
+    }
+
     return (
         <ContainerImage height={ height }>
             <Image 
-                src={ image }
+                src={ media }
                 alt={ description ? description : "Imagen" }
                 layout="fill"
                 objectFit='cover'

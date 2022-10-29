@@ -8,26 +8,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { LayoutPage } from '../../components/layout/LayoutPage'
 import { Portada } from '../../components/UI/Portada'
 import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/pages/home';
-import { fetchApi } from '../../utils/fetchApi'
+import { fetchApi, fetchApiGiphy } from '../../utils/fetchApi'
 import { Images } from '../../components/media/Images'
 import { IVideos } from '../../interface/videos'
+import { DataEntity, IGifs, IGifsShort } from '../../interface/gifs';
 
 interface Props {
-    data: IVideos; 
+    data: IGifsShort[]; 
 }
 
-const VideosPage: NextPage<Props> = ({ data }) => {
+const GifsPage: NextPage<Props> = ({ data }) => {
 
     const [inputSearch, setInputSearch] = useState("");
     const imageMemo = useMemo(() => (
         <Images 
-            media={ data.hits }
-            type="videos"
+            media={ data as IGifsShort[] }
+            type="gifs"
         />
     ), [ data ])
 
     return (
-        <LayoutPage title='DOTImages | Videos'>
+        <LayoutPage title='DOTImages | Gifs'>
             <PosInitial>
                 <Portada 
                     height='630px'
@@ -56,14 +57,21 @@ const VideosPage: NextPage<Props> = ({ data }) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    console.log(params)
-    const data = await fetchApi("order=popular&per_page=30&video_type=video", "videos");
+    
+    const { data } = await fetchApiGiphy("", "trending") as IGifs;
+
+    const gifsData = data?.map( gif => {
+        return {
+            url: gif.images.downsized_small.mp4,
+            id: gif.id,
+        }
+    })
     
     return {
         props: {
-            data
+            data: gifsData
         }
     }
 }
 
-export default VideosPage
+export default GifsPage

@@ -7,14 +7,12 @@ import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 
-import { fetchApi } from '../../utils/fetchApi';
-import { InterfaceImages } from '../../interface/images';
+import { fetchApi, fetchApiGiphy } from '../../utils/fetchApi';
+import { InterfaceImages, InterfaceImage } from '../../interface/images';
 import { LayoutPage } from '../../components/layout/LayoutPage';
 import { Container } from '../../styled/globals';
-
-interface Props {
-    data: InterfaceImages;
-}
+import { IVideo, IVideos } from '../../interface/videos';
+import { IGifsId } from '../../interface/gifs';
 
 const Section = styled.section`
     margin-top: 50px;
@@ -81,51 +79,90 @@ const ImageUser = styled.div`
     overflow: hidden;
 `
 
-const MediaPage: NextPage<Props> = ({ data: { hits } }) => {
+interface Props {
+    data: InterfaceImages | IVideos | IGifsId;
+    type: "image" | "videos" | "gifs";
+}
 
+const MediaPage: NextPage<Props> = ({ data, type }) => {
+
+    console.log(data)
     return (
         <LayoutPage title={ `DOTImages` }>
             <Container>
                 <Section>
                     <Fila1>
                         <HeaderImage>
-                            <Icons>
-                                <IconDiv>
-                                    <FontAwesomeIcon style={{ fontSize: "15px" }} icon={ faEye }/>
-                                    <p>{ hits[0].views }</p>
-                                </IconDiv>
-                                <IconDiv>
-                                    <FontAwesomeIcon style={{ fontSize: "15px" }} icon={ faThumbsUp }/>
-                                    <p>{ hits[0].likes }</p>
-                                </IconDiv>
-                                <IconDiv>
-                                    <FontAwesomeIcon style={{ fontSize: "15px" }} icon={ faArrowDown }/>
-                                    <p>{ hits[0].likes }</p>
-                                </IconDiv>
-                            </Icons>
-                            <Tags>
-                                { hits[0].tags }
-                            </Tags>
+                            {
+                                type !== "gifs" &&
+                                
+                                <>
+                                    <Icons>
+                                        <IconDiv>
+                                            <FontAwesomeIcon style={{ fontSize: "15px" }} icon={ faEye }/>
+                                            <p>{ (data as InterfaceImages | IVideos).hits[0].views }</p>
+                                        </IconDiv>
+                                        <IconDiv>
+                                            <FontAwesomeIcon style={{ fontSize: "15px" }} icon={ faThumbsUp }/>
+                                            <p>{ (data as InterfaceImages | IVideos).hits[0].likes }</p>
+                                        </IconDiv>
+                                        <IconDiv>
+                                            <FontAwesomeIcon style={{ fontSize: "15px" }} icon={ faArrowDown }/>
+                                            <p>{ (data as InterfaceImages | IVideos).hits[0].likes }</p>
+                                        </IconDiv>
+                                    </Icons>
+                                    <Tags>
+                                        { (data as InterfaceImages | IVideos).hits[0].tags }
+                                    </Tags>
+                                </>
+
+                            }
                         </HeaderImage>
                         <ImageContainerSize>
-                            <img
-                                style={{ width: "100%" }}
-                                src={ hits[0].largeImageURL }
-                                alt="Imágen"
-                            />
+                            {
+                                type === "image" ?
+                                <img
+                                    style={{ width: "100%" }}
+                                    src={ (data as InterfaceImages).hits[0]?.pageURL && (data as InterfaceImages).hits[0].largeImageURL }
+                                    alt="Imágen"
+                                />
+
+                                : type === "videos" ?
+                                <video
+                                    style={{ width: "100%" }}
+                                    src={ (( data as IVideos ).hits[0] as IVideo)?.videos && ( data as IVideos ).hits[0].videos.medium.url }
+                                    autoPlay
+                                    loop
+                                    muted
+                                    controls
+                                ></video>
+
+                                : 
+
+                                <video
+                                    style={{
+                                        width: "380px",
+                                        objectFit: "contain"
+                                    }}
+                                    src={ ( data as IGifsId).data.images.hd.mp4 }
+                                    loop 
+                                    muted
+                                    autoPlay={true}
+                                ></video>
+                            }
                         </ImageContainerSize>
                     </Fila1>
                     <InfoUser>
                         <User>
                             <ImageUser>
                                 <Image 
-                                    src={ hits[0].userImageURL }
+                                    src={ type === "image" || type === "videos" ? ( data as InterfaceImages ).hits[0].userImageURL : ( data as IGifsId ).data.user.avatar_url }
                                     layout="fill"
                                     objectFit='cover'
                                     alt="Imagen"
                                 />
                             </ImageUser>
-                            <p>{ hits[0].user }</p>
+                            <p>{ type === "image" || type === "videos" ? ( data as InterfaceImages ).hits[0].user : ( data as IGifsId ).data.user.username }</p>
                         </User>
                     </InfoUser>
                 </Section>
@@ -137,12 +174,18 @@ const MediaPage: NextPage<Props> = ({ data: { hits } }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const { media: [ type, id ] } =  params as { media: string[] };
-
-    const data = await fetchApi( `id=${ id }` );
-
+    let data;
+    
+    if ( type === "gifs" ){
+        data = await fetchApiGiphy("", id);
+    } else{
+        data = await fetchApi( `id=${ id }`, type );
+    }
+    
     return {
         props: {
-            data
+            data,
+            type
         }
     }
 }

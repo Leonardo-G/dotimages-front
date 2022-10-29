@@ -54,7 +54,7 @@ const HomePage: NextPage<Props> = ({ data }) => {
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
 
-    const data = await fetchApi("order=popular&per_page=60&safesearch=true");
+    const data = await fetchApi("order=popular&per_page=39&safesearch=true");
 
     return {
         props: {

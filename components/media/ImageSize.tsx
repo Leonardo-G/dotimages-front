@@ -9,10 +9,10 @@ import { BtnIcono, Iconos, ImageContainer } from '../../styled/ImageSize';
 
 interface Props {
     src: string;
-    description: string;
-    tags: string;
+    description?: string;
+    tags?: string;
     id: number;
-    type: "image" | "videos";
+    type: "image" | "videos" | "gifs";
 }
 
 export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
@@ -30,7 +30,7 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
     const handleLeaveHover = async (  ) => {
         video.current && video.current.pause();
     }
-
+    
     return (
             <ImageContainer 
                 onMouseOver={ handleHover }
@@ -47,18 +47,29 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
                         alt={ description }
                     />
 
+                    :  type === "videos"
+                    ?
+                        <video
+                            ref={ video }
+                            style={{
+                                width: "380px",
+                                objectFit: "contain"
+                            }}
+                            src={ src }
+                            muted
+                            loop
+                        ></video>
                     :
-
-                    <video
-                        ref={ video }
-                        style={{
-                            width: "380px",
-                            objectFit: "contain"
-                        }}
-                        src={ src }
-                        muted
-                        loop
-                    ></video>
+                        <video
+                            style={{
+                                width: "100%",
+                                objectFit: "contain"
+                            }}
+                            src={ src }
+                            loop 
+                            muted
+                            autoPlay={true}
+                        ></video>
                 }
                 <div className='headerImage'>
                     <div>

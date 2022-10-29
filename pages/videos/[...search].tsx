@@ -1,24 +1,27 @@
-import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
-import { GetStaticProps, NextPage } from 'next'
 
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Link from 'next/link';
+import { GetServerSideProps, NextPage } from 'next';
 
-import { LayoutPage } from '../../components/layout/LayoutPage'
-import { Portada } from '../../components/UI/Portada'
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/pages/home';
-import { fetchApi } from '../../utils/fetchApi'
-import { Images } from '../../components/media/Images'
-import { IVideos } from '../../interface/videos'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-interface Props {
-    data: IVideos; 
+import { fetchApi } from '../../utils/fetchApi';
+import { LayoutPage } from '../../components/layout/LayoutPage';
+import { Images } from '../../components/media/Images';
+import { PosInitial, PosCenter, BarraBusqueda, InputSearch } from '../../styled/pages/home';
+import { Portada } from '../../components/UI/Portada';
+import { InterfaceImages } from '../../interface/images';
+
+
+interface Props{
+    data: InterfaceImages;
+    search: string;
 }
 
-const VideosPage: NextPage<Props> = ({ data }) => {
+const VideoBusquedaPage: NextPage<Props> = ({ data, search }) => {
 
-    const [inputSearch, setInputSearch] = useState("");
+    const [inputSearch, setInputSearch] = useState(search);
     const imageMemo = useMemo(() => (
         <Images 
             media={ data.hits }
@@ -27,7 +30,7 @@ const VideosPage: NextPage<Props> = ({ data }) => {
     ), [ data ])
 
     return (
-        <LayoutPage title='DOTImages | Videos'>
+        <LayoutPage title='DOTImages'>
             <PosInitial>
                 <Portada 
                     height='630px'
@@ -55,15 +58,17 @@ const VideosPage: NextPage<Props> = ({ data }) => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    console.log(params)
-    const data = await fetchApi("order=popular&per_page=30&video_type=video", "videos");
-    
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+
+    const { search } = params as { search: string[] };
+    const data = await fetchApi(`${search[0]}&per_page=30`, "videos");
+    const qSearch = search[0].split("q=").join("").split("&");
+
     return {
         props: {
-            data
+            data,
+            search: qSearch
         }
     }
 }
-
-export default VideosPage
+export default VideoBusquedaPage

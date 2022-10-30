@@ -1,19 +1,19 @@
 import React, { KeyboardEvent, useMemo, useState } from 'react';
-import { NextPage, GetServerSideProps } from 'next';
+
 import Link from 'next/link';
+import { NextPage, GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
+import { Container } from '../../styled/globals';
+import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Tags } from '../../styled/pages/home';
 import { fetchApiGiphy } from '../../utils/fetchApi';
 import { IGifs, IGifsShort, Pagination } from '../../interface/gifs';
 import { LayoutPage } from '../../components/layout/LayoutPage';
-import { BarraBusqueda, IconPage, InputSearch, NextPageStyle, Page, PaginationStyle, PosCenter, PosInitial, Tags } from '../../styled/pages/home';
 import { Portada } from '../../components/UI/Portada';
 import { Images } from '../../components/media/Images';
-import { Container } from '../../styled/globals';
-import { arrayPage } from '../../utils/arrayPage';
-import { useRouter } from 'next/router';
 import { PaginationDiv } from '../../components/pagination/PaginationDiv';
 
 interface Props {
@@ -46,6 +46,7 @@ const StickersBusquedaPage: NextPage<Props> = ({ data, search, page, pagination 
         }
     }
 
+    
     return (
         <LayoutPage title={`DOTImages | ${ search }`}>
             <PosInitial>
@@ -101,7 +102,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { data, pagination } = await fetchApiGiphy(`${ searchValue }&offset=${ offset }&limit=30`, "search", "stickers") as IGifs
     const qSearch = searchValue.split("q").join("").split("=").join("").split("+").join(" ");
     
-    console.log(pagination)
     const gifsData = data?.map( gif => {
         return {
             url: gif.images.downsized_small.mp4,

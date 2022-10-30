@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { useMemo, useState } from 'react'
+import React, { KeyboardEvent, useMemo, useState } from 'react'
 import { GetStaticProps, NextPage } from 'next'
 
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -11,6 +11,7 @@ import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/
 import { fetchApiGiphy } from '../../utils/fetchApi'
 import { Images } from '../../components/media/Images'
 import { IGifs, IGifsShort } from '../../interface/gifs';
+import { useRouter } from 'next/router'
 
 interface Props {
     data: IGifsShort[]; 
@@ -19,12 +20,21 @@ interface Props {
 const GifsPage: NextPage<Props> = ({ data }) => {
 
     const [inputSearch, setInputSearch] = useState("");
+    const router = useRouter();
+
     const imageMemo = useMemo(() => (
         <Images 
             media={ data as IGifsShort[] }
             type="gifs"
         />
     ), [ data ])
+
+    const handlePressEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
+        if ( e.key === "Enter" ){
+
+            router.push(`/gifs/q=${ inputSearch.split(" ").join("+") }&page=1`);
+        }
+    }
 
     return (
         <LayoutPage title='DOTImages | Gifs'>
@@ -38,7 +48,7 @@ const GifsPage: NextPage<Props> = ({ data }) => {
                 <PosCenter>
                     <h1>Videos para tus proyectos GRATIS!</h1>
                     <BarraBusqueda>
-                        <Link href={`/gifs/q=${ inputSearch }`} passHref>
+                        <Link href={`/gifs/q=${ inputSearch }&page=1`} passHref>
                             <FontAwesomeIcon icon={ faMagnifyingGlass }/>
                         </Link>
                         <InputSearch
@@ -46,6 +56,7 @@ const GifsPage: NextPage<Props> = ({ data }) => {
                             placeholder="Buscar... Ejemplo: Capitán america"
                             value={ inputSearch }
                             onChange={ ( e ) => setInputSearch( e.target.value ) }
+                            onKeyUp={ handlePressEnter }
                         />
                     </BarraBusqueda>
                 </PosCenter>

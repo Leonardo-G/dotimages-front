@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { KeyboardEvent, useMemo, useState } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import { fetchApiGiphy } from '../../utils/fetchApi';
-import { IGifs, IGifsShort } from '../../interface/gifs';
+import { IGifs, IGifsShort, Pagination } from '../../interface/gifs';
 import { LayoutPage } from '../../components/layout/LayoutPage';
 import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/pages/home';
 import { Portada } from '../../components/UI/Portada';
@@ -9,15 +9,39 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Images } from '../../components/media/Images';
+import { useRouter } from 'next/router';
+import { Container } from '../../styled/globals';
+import { PaginationDiv } from '../../components/pagination/PaginationDiv';
 
 interface Props {
     data: IGifsShort[];
     search: string;
+    page: number;
+    pagination: Pagination;
 }
 
-const GifsSearchPage: NextPage<Props> = ({ data, search }) => {
+const GifsSearchPage: NextPage<Props> = ({ data, search, page, pagination }) => {
 
     const [inputSearch, setInputSearch] = useState(search);
+    const router = useRouter();
+
+    const imageMemo = useMemo(() => (
+        <Images
+            media={ data }
+            type="gifs"    
+        />
+    ), [ data ])
+
+    const handleSearchMedia = ( page: number ) => {
+        router.push(`/gifs/q=${ inputSearch.split(" ").join("+") }&page=${ page }`)
+    }
+
+    const handlePressEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
+        if ( e.key === "Enter" ){
+
+            router.push(`/gifs/q=${ inputSearch.split(" ").join("+") }&page=1`);
+        }
+    }
 
     return (
         <LayoutPage title={`DOTImages | ${ search }}`}>
@@ -39,28 +63,34 @@ const GifsSearchPage: NextPage<Props> = ({ data, search }) => {
                             placeholder="Buscar... Ejemplo: Pelota"
                             value={ inputSearch }
                             onChange={ ( e ) => setInputSearch( e.target.value ) }
+                            onKeyUp={ handlePressEnter }
                         />
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
-            <Images
-                media={ data }
-                type="gifs"    
-            />
+            { imageMemo }
+            <Container>
+                <PaginationDiv  
+                    page={ page } 
+                    pagination={ pagination } 
+                    handleSearchMedia={ handleSearchMedia }
+                />
+            </Container>
         </LayoutPage>
     )
 }
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     
     const { search } = params as { search: string[] };
+    const [ searchValue, page ] = search[0].split("&") as string[];
 
-    const { data } = await fetchApiGiphy(`${ search[0] }`, "search", "gifs") as IGifs
+    const pageValue = page.split("page=").join("");
+    const offset = ( Number(pageValue) - 1 ) * 30;
     
-    const qSearch = search[0].split("q=").join("").split("&");
+    const { data, pagination } = await fetchApiGiphy(`${ searchValue }&offset=${ offset }&limit=30`, "search", "gifs") as IGifs
+    const qSearch = searchValue.split("q").join("").split("=").join("").split("+").join(" ");
+    
     const gifsData = data?.map( gif => {
         return {
             url: gif.images.downsized_small.mp4,
@@ -71,7 +101,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return {
         props: {
             data: gifsData,
-            search: qSearch
+            search: qSearch,
+            pagination: pagination,
+            page: Number( pageValue )
         }
     }
 }

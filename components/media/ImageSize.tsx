@@ -69,6 +69,7 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
                             loop 
                             muted
                             autoPlay={true}
+                            
                         ></video>
                 }
                 <div className='headerImage'>

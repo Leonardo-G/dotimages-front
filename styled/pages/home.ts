@@ -36,3 +36,35 @@ export const InputSearch = styled.input`
     color: #fff;
     font-size: 16px;
 `
+
+export const Tags = styled.div`
+    margin: 20px 0px;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background: #DFE5F2;
+    display: inline-block;
+
+    p{
+        font-size: 16px;
+    }
+`
+
+export const PaginationStyle = styled.div`
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+`
+
+export const Page = styled.div`
+    cursor: pointer;
+    background: ${ ({color}) => color };
+    border-radius: 6px;
+    padding: 20px;
+    font-size: 20px;
+    color: #000;
+    &:hover{
+        background: #222C40;
+        color: #fff
+    }
+`

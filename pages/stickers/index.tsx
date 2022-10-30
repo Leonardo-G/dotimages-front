@@ -27,18 +27,18 @@ const GifsPage: NextPage<Props> = ({ data }) => {
     ), [ data ])
 
     return (
-        <LayoutPage title='DOTImages | Gifs'>
+        <LayoutPage title='DOTImages | Stickers'>
             <PosInitial>
                 <Portada 
                     height='630px'
                     media='/portada.png'
                     type="image"
-                    description='Imagen Portada'
+                    description='Stickers Portada'
                 />
                 <PosCenter>
-                    <h1>Videos para tus proyectos GRATIS!</h1>
+                    <h1>Stickers para tus proyectos GRATIS!</h1>
                     <BarraBusqueda>
-                        <Link href={`/gifs/q=${ inputSearch }`} passHref>
+                        <Link href={`/stickers/q=${ inputSearch }&page=1`} passHref>
                             <FontAwesomeIcon icon={ faMagnifyingGlass }/>
                         </Link>
                         <InputSearch
@@ -57,7 +57,7 @@ const GifsPage: NextPage<Props> = ({ data }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     
-    const { data } = await fetchApiGiphy("", "trending", "gifs") as IGifs;
+    const { data } = await fetchApiGiphy("", "trending", "stickers") as IGifs;
 
     const gifsData = data?.map( gif => {
         return {

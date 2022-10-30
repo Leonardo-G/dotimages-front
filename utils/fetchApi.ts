@@ -8,8 +8,8 @@ export const fetchApi = async ( url: string, type = "image" ) :Promise<Interface
     return response;
 }
 
-export const fetchApiGiphy = async ( url: string, params: string ) :Promise<IGifs | IGifsId> => {
-    const results = await fetch(`https://api.giphy.com/v1/gifs${ params !== "" ? "/" + params : "/" }?api_key=${ process.env.NEXT_PUBLIC_API_KEY_GIPHY }&rating=g&${url}`);
+export const fetchApiGiphy = async ( url: string, params: string, type: "gifs" | "stickers" ) :Promise<IGifs | IGifsId> => {
+    const results = await fetch(`https://api.giphy.com/v1/${ type }${ params !== "" ? "/" + params : "/" }?api_key=${ process.env.NEXT_PUBLIC_API_KEY_GIPHY }&rating=g&${url}&lang=es`);
     const response = await results.json();
 
     return response;

@@ -71,4 +71,5 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         }
     }
 }
+
 export default VideoBusquedaPage

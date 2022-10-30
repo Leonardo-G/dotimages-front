@@ -53,6 +53,8 @@ export const Tags = styled.div`
 export const PaginationStyle = styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
+    column-gap: 30px;
     margin: 30px 0;
 `
 
@@ -62,9 +64,30 @@ export const Page = styled.div`
     border-radius: 6px;
     padding: 20px;
     font-size: 20px;
-    color: #000;
+    color: ${ ({color}) => color === "#222C40" ? "#fff" : "#000" };
     &:hover{
         background: #222C40;
         color: #fff
     }
+`
+
+export const NextPageStyle = styled.div`
+    cursor: pointer;
+    background: ${ ({color}) => color };
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    position: relative;
+    &:hover{
+        background: #222C40;
+        color: #fff
+    }
+`
+
+export const IconPage = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
 `

@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, KeyboardEventHandler, useMemo, useState } from 'react';
+import React, { KeyboardEvent, useMemo, useState } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import Link from 'next/link';
 
@@ -14,6 +14,7 @@ import { Images } from '../../components/media/Images';
 import { Container } from '../../styled/globals';
 import { arrayPage } from '../../utils/arrayPage';
 import { useRouter } from 'next/router';
+import { PaginationDiv } from '../../components/pagination/PaginationDiv';
 
 interface Props {
     data: IGifsShort[];
@@ -34,6 +35,9 @@ const StickersBusquedaPage: NextPage<Props> = ({ data, search, page, pagination 
         />
     ), [ data ])
 
+    const handleSearchMedia = ( page: number ) => {
+        router.push(`/stickers/q=${ inputSearch.split(" ").join("+") }&page=${ page }`)
+    }
 
     const handlePressEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
         if ( e.key === "Enter" ){
@@ -76,41 +80,11 @@ const StickersBusquedaPage: NextPage<Props> = ({ data, search, page, pagination 
             { imageMemo }
             
             <Container>
-                <PaginationStyle>
-                {
-                       page !== 1 && 
-                            
-                        <Link href={`/stickers/q=${ inputSearch.split(" ").join("+") }&page=${ page - 1 }`} passHref>
-                            <NextPageStyle color='#DFE5F2'>
-                                <IconPage>
-                                    <FontAwesomeIcon icon={ faChevronLeft }/>
-                                </IconPage>
-                            </NextPageStyle>
-                        </Link>
-                    }
-                    {
-                        arrayPage( pagination.total_count, pagination.count, page ).map( n => (
-
-                            
-                                <Link href={`/stickers/q=${ inputSearch.split(" ").join("+") }&page=${ n }`} passHref key={ n }>
-                                    <Page color={ page === n ? "#222C40" : '#DFE5F2' } key={ n }>
-                                        <p>{ n }</p>
-                                    </Page>
-                                </Link>
-                         ) )
-                    }
-                    {
-                        arrayPage( pagination.total_count, pagination.count, page)[ arrayPage( pagination.total_count, pagination.count, page).length - 1 ] !== page &&
-                            
-                        <Link href={`/stickers/q=${ inputSearch.split(" ").join("+") }&page=${ page + 1 }`} passHref>
-                            <NextPageStyle color='#DFE5F2'>
-                                <IconPage>
-                                    <FontAwesomeIcon icon={ faChevronRight }/>
-                                </IconPage>
-                            </NextPageStyle>
-                        </Link>
-                    }
-                </PaginationStyle>
+                <PaginationDiv  
+                    page={ page } 
+                    pagination={ pagination } 
+                    handleSearchMedia={ handleSearchMedia }
+                />
             </Container>
         </LayoutPage>
     )

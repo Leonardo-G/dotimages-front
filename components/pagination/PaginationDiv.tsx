@@ -1,9 +1,10 @@
+import React, { FC } from 'react'
+
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Link from 'next/link'
-import React, { FC } from 'react'
-import { Pagination } from '../../interface/gifs'
+
 import { IconPage, NextPageStyle, Page, PaginationStyle } from '../../styled/pages/home'
+import { Pagination } from '../../interface/gifs'
 import { arrayPage } from '../../utils/arrayPage'
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export const PaginationDiv: FC<Props> = ({ pagination, page, handleSearchMedia }) => {
-    
+    console.log(arrayPage( pagination.total_count, pagination.count, page ))
     return (
         <PaginationStyle>
             {

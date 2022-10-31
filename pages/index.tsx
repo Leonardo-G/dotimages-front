@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { KeyboardEvent, useState } from 'react'
 import { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 
@@ -9,8 +9,10 @@ import { LayoutPage } from '../components/layout/LayoutPage'
 import { Portada } from '../components/UI/Portada'
 import { Images } from '../components/media/Images'
 import { fetchApi } from '../utils/fetchApi'
-import { PosCenter, PosInitial, BarraBusqueda, InputSearch } from '../styled/pages/home';
+import { PosCenter, PosInitial, BarraBusqueda, InputSearch, Subtitle } from '../styled/pages/home';
 import { InterfaceImages } from '../interface/images'
+import { useRouter } from 'next/router'
+import { Container } from '../styled/globals'
 
 interface Props {
     data: InterfaceImages;
@@ -18,7 +20,15 @@ interface Props {
 
 const HomePage: NextPage<Props> = ({ data }) => {
 
-    const [search, setSearch] = useState("");
+    const [inputSearch, setInputSearch] = useState("");
+    const router = useRouter()
+
+    const handlePressEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
+        if ( e.key === "Enter" ){
+
+            router.push(`/images/q=${ inputSearch.split(" ").join("+") }&page=1`);
+        }
+    }
 
     return (
         <LayoutPage title='DOTimages'>
@@ -32,18 +42,24 @@ const HomePage: NextPage<Props> = ({ data }) => {
                 <PosCenter>
                     <h1>Imagenes para tus proyectos GRATIS!</h1>
                     <BarraBusqueda>
-                        <Link href={`/images/q=${ search }`} passHref>
+                        <Link href={`/images/q=${ inputSearch }`} passHref>
                             <FontAwesomeIcon icon={ faMagnifyingGlass }/>
                         </Link>
                         <InputSearch 
                             type="text"
                             placeholder="Buscar... Ejemplo: Pelota"
-                            value={ search }
-                            onChange={ ( e ) => setSearch( e.target.value ) }
+                            value={ inputSearch }
+                            onChange={ ( e ) => setInputSearch( e.target.value ) }
+                            onKeyUp={ handlePressEnter }
                         />
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
+            <Container>
+                <Subtitle>
+                    <h3>Tendencias</h3>
+                </Subtitle>
+            </Container>
             <Images 
                 media={ data.hits }
                 type="image"    
@@ -53,7 +69,7 @@ const HomePage: NextPage<Props> = ({ data }) => {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-
+    
     const data = await fetchApi("order=popular&per_page=39&safesearch=true");
 
     return {

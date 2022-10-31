@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { useMemo, useState } from 'react'
+import React, { KeyboardEvent, useMemo, useState } from 'react'
 import { GetStaticProps, NextPage } from 'next'
 
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -7,10 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { LayoutPage } from '../../components/layout/LayoutPage'
 import { Portada } from '../../components/UI/Portada'
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/pages/home';
+import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Subtitle } from '../../styled/pages/home';
 import { fetchApiGiphy } from '../../utils/fetchApi'
 import { Images } from '../../components/media/Images'
 import { IGifs, IGifsShort } from '../../interface/gifs';
+import { useRouter } from 'next/router'
+import { Container } from '../../styled/globals'
 
 interface Props {
     data: IGifsShort[]; 
@@ -19,12 +21,21 @@ interface Props {
 const GifsPage: NextPage<Props> = ({ data }) => {
 
     const [inputSearch, setInputSearch] = useState("");
+    const router = useRouter();
+    
     const imageMemo = useMemo(() => (
         <Images 
             media={ data as IGifsShort[] }
             type="gifs"
         />
     ), [ data ])
+
+    const handlePressEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
+        if ( e.key === "Enter" ){
+
+            router.push(`/stickers/q=${ inputSearch.split(" ").join("+") }&page=1`);
+        }
+    }
 
     return (
         <LayoutPage title='DOTImages | Stickers'>
@@ -46,10 +57,16 @@ const GifsPage: NextPage<Props> = ({ data }) => {
                             placeholder="Buscar... Ejemplo: Capitán america"
                             value={ inputSearch }
                             onChange={ ( e ) => setInputSearch( e.target.value ) }
+                            onKeyUp={ handlePressEnter }
                         />
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
+            <Container>
+                <Subtitle>
+                    <h3>Tendencias</h3>
+                </Subtitle>
+            </Container>
             { imageMemo }
         </LayoutPage>
     )

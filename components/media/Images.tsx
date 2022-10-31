@@ -5,11 +5,10 @@ import styled from 'styled-components';
 import { ImageSize } from './ImageSize';
 import { Container } from '../../styled/globals';
 import { InterfaceImage } from '../../interface/images';
-import { IVideo } from '../../interface/videos';
-import { DataEntity, IGifs, IGifsShort } from '../../interface/gifs';
+import { IGifsShort } from '../../interface/gifs';
 
 const Section = styled.section`
-    margin-top: 50px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
 `

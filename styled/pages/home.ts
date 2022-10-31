@@ -37,6 +37,20 @@ export const InputSearch = styled.input`
     font-size: 16px;
 `
 
+export const Subtitle = styled.div`
+    margin-top: 35px;
+
+    h3{
+        font-size: 26px;
+    }
+`
+
+export const DivBusqueda = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+`
+
 export const Tags = styled.div`
     margin: 20px 0px;
     width: auto;
@@ -44,9 +58,21 @@ export const Tags = styled.div`
     border-radius: 20px;
     background: #DFE5F2;
     display: inline-block;
+    display: flex;
+    align-items: center;
+    column-gap: 7px;
 
     p{
         font-size: 16px;
+    }
+
+    .icon{
+        visibility: visible;
+        cursor: pointer;
+        
+        &:hover{
+            color: #F2EA77;
+        }
     }
 `
 

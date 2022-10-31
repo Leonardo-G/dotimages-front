@@ -2,8 +2,11 @@ export const arrayPage = ( total: number, limit: number, pageCurrent: number ): 
 
     const totalCount = total > 4999 ? 4999 : total;
     const quantityPage = totalCount / limit;
-    
     let pages = [];
+
+    if ( totalCount <= limit ){
+        return [1];
+    }
     
     if ( pageCurrent === 1 ){
         for ( let i = pageCurrent; i <= pageCurrent + 4; i++){

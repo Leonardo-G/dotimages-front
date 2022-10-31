@@ -3,7 +3,7 @@ import { NextPage, GetServerSideProps } from 'next';
 import { fetchApiGiphy } from '../../utils/fetchApi';
 import { IGifs, IGifsShort, Pagination } from '../../interface/gifs';
 import { LayoutPage } from '../../components/layout/LayoutPage';
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial } from '../../styled/pages/home';
+import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Tags } from '../../styled/pages/home';
 import { Portada } from '../../components/UI/Portada';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -68,6 +68,11 @@ const GifsSearchPage: NextPage<Props> = ({ data, search, page, pagination }) => 
                     </BarraBusqueda>
                 </PosCenter>
             </PosInitial>
+            <Container>
+                <Tags>
+                    <p>{ search }</p>
+                </Tags>
+            </Container>
             { imageMemo }
             <Container>
                 <PaginationDiv  

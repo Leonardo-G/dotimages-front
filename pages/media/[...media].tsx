@@ -3,7 +3,7 @@ import { NextPage, GetServerSideProps } from 'next'
 import Image from 'next/image';
 
 import styled from 'styled-components';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 
@@ -12,7 +12,8 @@ import { InterfaceImages, InterfaceImage } from '../../interface/images';
 import { LayoutPage } from '../../components/layout/LayoutPage';
 import { Container } from '../../styled/globals';
 import { IVideo, IVideos } from '../../interface/videos';
-import { IGifsId } from '../../interface/gifs';
+import { IGifsId, ImagesId } from '../../interface/gifs';
+import Link from 'next/link';
 
 const Section = styled.section`
     margin-top: 50px;
@@ -79,6 +80,24 @@ const ImageUser = styled.div`
     overflow: hidden;
 `
 
+const ButtonWeb = styled.div`
+    margin-top: 50px;
+    background: #222C40;
+    width: 100%;
+    border-radius: 50px;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    align-items: center;
+
+    &:hover {
+        background: #3a4762
+    }
+`
+
 interface Props {
     data: InterfaceImages | IVideos | IGifsId;
     type: "image" | "videos" | "gifs";
@@ -141,7 +160,7 @@ const MediaPage: NextPage<Props> = ({ data, type }) => {
 
                                 <video
                                     style={{
-                                        width: "380px",
+                                        width: "100%",
                                         objectFit: "contain"
                                     }}
                                     src={ ( data as IGifsId).data.images.hd.mp4 }
@@ -164,6 +183,12 @@ const MediaPage: NextPage<Props> = ({ data, type }) => {
                             </ImageUser>
                             <p>{ type === "image" || type === "videos" ? ( data as InterfaceImages ).hits[0].user : ( data as IGifsId ).data.user.username }</p>
                         </User>
+                        <Link href={ type === "image" || type === "videos" ? (data as InterfaceImages).hits[0].pageURL : (data as IGifsId).data.url }>
+                            <ButtonWeb>
+                                <FontAwesomeIcon icon={ faGlobe }/>
+                                <p>Ir a la web</p>
+                            </ButtonWeb>
+                        </Link>
                     </InfoUser>
                 </Section>
             </Container>
@@ -177,7 +202,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     let data;
     
     if ( type === "gifs" ){
-        data = await fetchApiGiphy("", id);
+        data = await fetchApiGiphy("", id, "gifs");
+        console.log(data)
     } else{
         data = await fetchApi( `id=${ id }`, type );
     }

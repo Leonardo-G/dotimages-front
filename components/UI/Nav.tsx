@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
 
 import { Container } from '../../styled/globals';
+import { Login } from '../form/Login';
 
 const Header = styled.header`
     background: #FFFFFF;
@@ -43,32 +44,50 @@ const BtnRegistro = styled.a`
     }
 `
 
+const EnlaceP = styled.div`
+    padding: 15px 10px;
+    cursor: pointer;
+    display: inline-block;
+`
+
 export const Nav = () => {
+
+    const [showForm, setShowForm] = useState(false);
+
     return (
-        <Header>
-            <Container>
-                <Navigation>
-                    <Brand>DOT<span>Images</span></Brand>
-                    <div>
-                        <Link href="/">
-                            <Enlace>Imágenes</Enlace>
-                        </Link>
-                        <Link href="/videos">
-                            <Enlace>Videos</Enlace>
-                        </Link>
-                        <Link href="/gifs">
-                            <Enlace>Gifs</Enlace>
-                        </Link>
-                        <Link href="/stickers">
-                            <Enlace href="">Stickers</Enlace>
-                        </Link>
-                    </div>
-                    <div>
-                        <Enlace href="">Iniciar Sesión</Enlace>
-                        <BtnRegistro href="">Registrarse</BtnRegistro>
-                    </div>
-                </Navigation>
-            </Container>
-        </Header>
+        <>
+            {
+                showForm &&
+                <Login />
+            }
+            <Header>
+                <Container>
+                    <Navigation>
+                        <Brand>DOT<span>Images</span></Brand>
+                        <div>
+                            <Link href="/">
+                                <Enlace>Imágenes</Enlace>
+                            </Link>
+                            <Link href="/videos">
+                                <Enlace>Videos</Enlace>
+                            </Link>
+                            <Link href="/gifs">
+                                <Enlace>Gifs</Enlace>
+                            </Link>
+                            <Link href="/stickers">
+                                <Enlace href="">Stickers</Enlace>
+                            </Link>
+                        </div>
+                        <div>
+                            <EnlaceP onClick={ () => setShowForm(true) }>
+                                <p>Iniciar Sesión</p>
+                            </EnlaceP>
+
+                            <BtnRegistro href="">Registrarse</BtnRegistro>
+                        </div>
+                    </Navigation>
+                </Container>
+            </Header>
+        </>
     )
 }

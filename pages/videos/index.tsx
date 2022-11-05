@@ -22,6 +22,7 @@ const VideosPage: NextPage<Props> = ({ data }) => {
 
     const [inputSearch, setInputSearch] = useState("");
     const router = useRouter();
+
     const imageMemo = useMemo(() => (
         <Images 
             media={ data.hits }

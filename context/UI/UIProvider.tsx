@@ -1,6 +1,14 @@
 import React, { FC, ReactNode, useReducer } from 'react'
+
 import { UIContext } from './UIContext';
 import { UIReducer } from './UIReducer';
+
+import { 
+    formCloseAction,
+    formLoginAction, 
+    formRegisterAction, 
+    formsChangeAction
+} from '../../actions/UIActions';
 
 interface Props {
     children: ReactNode;
@@ -21,27 +29,19 @@ export const UIProvider: FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer( UIReducer, INITIAL_STATE );
 
     const handleShowLogin = () => {
-        dispatch({
-            type: "FORM LOGIN"
-        })
+        dispatch( formLoginAction() )
     }
 
     const handleShowRegister = ( ) => {
-        dispatch({
-            type: "FORM REGISTER"
-        })
+        dispatch( formRegisterAction() )
     }
 
     const handleCloseForm = () => {
-        dispatch({
-            type: "CLOSE FORM"
-        })
+        dispatch( formCloseAction() )
     }
 
     const handleChangeForms = () => {
-        dispatch({
-            type: "CHANGE FORM"
-        })
+        dispatch( formsChangeAction() )
     }
 
     return (

@@ -1,7 +1,13 @@
 import React, { FC, ReactNode, useReducer } from 'react'
+
 import { IUser, IUserError, IUserForm } from '../../interface/user';
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
+
+import { 
+    errorLoginAction, 
+    loadingUserAction 
+} from '../../actions/authAction';
 
 export interface AuthState {
     isAuthenticated: boolean,
@@ -33,39 +39,25 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
         if ( email === "" || password === "" ){
-            dispatch({
-                type: "ERROR LOGIN",
-                payload: "Completá todos los campos"
-            })
+            dispatch( errorLoginAction("Completá todos los campos") )
             return
         }
         
         if ( !regExp.test(email) ){
-            dispatch({
-                type: "ERROR LOGIN",
-                payload: "Ingrese un correo válido"
-            })
+            dispatch( errorLoginAction("Ingrese un correo válido") )
             return
         }
 
         if ( password.length < 6 ){
-            dispatch({
-                type: "ERROR LOGIN",
-                payload: "Se requiere 6 caracteres mínimo en la contraseña"
-            })
+            dispatch( errorLoginAction("Se requiere 6 caracteres mínimo en la contraseña") )
             return
         }
-        changeLoading();
+        
+        dispatch( loadingUserAction() )
     }
 
-    const registerUser = ( user: IUserForm) => {
-
-    }
-
-    const changeLoading = () => {
-        dispatch({
-            type: "LOADING USER",
-        })
+    const registerUser = ( user: IUserForm ) => {
+        
     }
 
     return (
@@ -74,7 +66,6 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
             //Methods
             loginUser,
-            changeLoading,
             registerUser
         }} >
             { children }

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IUser, IUserError } from '../../interface/user';
+import { IUser, IUserError, IUserForm } from '../../interface/user';
 
 export interface ContextProps {
     isAuthenticated: boolean;
@@ -7,7 +7,7 @@ export interface ContextProps {
     error: IUserError;
     loading: boolean;
     loginUser: ( email: string, password: string ) => void;
-    changeLoading: () => void; 
+    registerUser: ( user: IUserForm) => void;
 };
 
 export const AuthContext = createContext({} as ContextProps);

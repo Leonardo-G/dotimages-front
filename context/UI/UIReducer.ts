@@ -1,36 +1,48 @@
-import { truncate } from "fs"
 import { UIState } from "./UIProvider"
+import { 
+    IChangeForm, 
+    ICloseForm, 
+    IFormLogin, 
+    IFormRegister 
+} from '../../interface/types';
+
+import { 
+    FORM_LOGIN, 
+    FORM_REGISTER, 
+    CLOSE_FORM, 
+    CHANGE_FORM 
+} from '../../types/index';
 
 type Action = 
-    | { type: "FORM LOGIN" }
-    | { type: "FORM REGISTER" }
-    | { type: "CLOSE FORM" }
-    | { type: "CHANGE FORM" }
+    | { type: IFormLogin }
+    | { type: IFormRegister }
+    | { type: ICloseForm }
+    | { type: IChangeForm }
 
 export const UIReducer = ( state: UIState, action: Action ): UIState => {
     switch (action.type) {
-        case "FORM LOGIN":
+        case FORM_LOGIN:
             return {
                 ...state,
                 showFormRegister: false,
                 showFormLogin: true
             }
 
-        case "FORM REGISTER": 
+        case FORM_REGISTER: 
             return {
                 ...state,
                 showFormRegister: true,
                 showFormLogin: false
             }
 
-        case "CLOSE FORM":
+        case CLOSE_FORM:
             return {
                 ...state,
                 showFormRegister: false,
                 showFormLogin: false
             }
 
-        case "CHANGE FORM": 
+        case CHANGE_FORM: 
             return {
                 ...state,
                 showFormLogin: !state.showFormLogin,

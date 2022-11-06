@@ -1,7 +1,9 @@
+import React, { FC, useContext } from 'react'
+
+import styled from 'styled-components'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { FC } from 'react'
-import styled from 'styled-components'
+import { UIContext } from '../../context/UI/UIContext'
 
 const BackgroundForm = styled.div`
     background: #fff;
@@ -81,25 +83,45 @@ const ButtonClose = styled.div`
 `
 
 export const Login: FC = () => {
+
+    const { handleCloseForm, showFormRegister, handleChangeForms } = useContext( UIContext )
     
     return (
         <BackgroundForm>
-            <ButtonClose>
+            <ButtonClose
+                onClick={ handleCloseForm }
+            >
                 <FontAwesomeIcon icon={ faXmark }/>
             </ButtonClose>
-            <h3>Inicie Sesión con su cuenta</h3>
+            <h3>{ showFormRegister ? "Creese una nueva cuenta" : "Inicie Sesión con su cuenta"}</h3>
             <Form>
                 <CampoDiv>
                     <Label>Correo</Label>
                     <Input type="text"/>
                 </CampoDiv>
+                {
+                    showFormRegister &&
+                    <CampoDiv>
+                        <Label>Nombre</Label>
+                        <Input type="text"/>
+                    </CampoDiv>
+                }
                 <CampoDiv>
                     <Label>Contraseña</Label>
-                    <Input type="text"/>
+                    <Input type="password"/>
                 </CampoDiv>
-                <ButtonSubmit type="submit" value="Iniciar Sesión"/>
+                {
+                    showFormRegister &&
+                    <CampoDiv>
+                        <Label>Repetir Contraseña</Label>
+                        <Input type="password"/>
+                    </CampoDiv>
+                }
+                <ButtonSubmit type="submit" value={ showFormRegister ? "Registrarse" : "Iniciar sesión" }/>
             </Form>
-            <TextLight>Nueva Cuenta</TextLight>
+            <TextLight
+                onClick={ handleChangeForms }
+            >{ showFormRegister ? "Ya tengo cuenta" : "Nueva Cuenta" }</TextLight>
         </BackgroundForm>
     )
 }

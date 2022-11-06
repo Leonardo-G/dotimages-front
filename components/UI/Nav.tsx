@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import styled from "styled-components";
+import { UIContext } from '../../context/UI/UIContext';
 
 import { Container } from '../../styled/globals';
 import { Login } from '../form/Login';
@@ -32,11 +33,13 @@ const Enlace = styled.a`
     cursor: pointer;
 `
 
-const BtnRegistro = styled.a`
+const BtnRegistro = styled.div`
     background: #F2EA77;
     border-radius: 50px;
     padding: 15px 18px;
     transition: .6s all ease;
+    display: inline-block;
+    cursor: pointer;
 
     &:hover{
         border-radius: 5px;
@@ -52,12 +55,12 @@ const EnlaceP = styled.div`
 
 export const Nav = () => {
 
-    const [showForm, setShowForm] = useState(false);
+    const { showFormLogin, handleShowLogin, handleShowRegister, showFormRegister } = useContext( UIContext )
 
     return (
         <>
             {
-                showForm &&
+                ( showFormLogin || showFormRegister ) &&
                 <Login />
             }
             <Header>
@@ -79,11 +82,13 @@ export const Nav = () => {
                             </Link>
                         </div>
                         <div>
-                            <EnlaceP onClick={ () => setShowForm(true) }>
+                            <EnlaceP onClick={ () => handleShowLogin() }>
                                 <p>Iniciar Sesión</p>
                             </EnlaceP>
 
-                            <BtnRegistro href="">Registrarse</BtnRegistro>
+                            <BtnRegistro onClick={ handleShowRegister }>
+                                <p>Registrarse</p>
+                            </BtnRegistro>
                         </div>
                     </Navigation>
                 </Container>

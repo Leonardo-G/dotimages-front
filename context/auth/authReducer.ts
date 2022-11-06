@@ -4,6 +4,7 @@ import { AuthState } from "./AuthProvider"
 type ActionType = 
     | { type: "USER LOGIN", payload: null | IUser }
     | { type: "ERROR LOGIN", payload: string }
+    | { type: "LOADING USER" }
 
 export const authReducer = ( state: AuthState, action: ActionType ): AuthState => {
     switch (action.type) {
@@ -23,7 +24,16 @@ export const authReducer = ( state: AuthState, action: ActionType ): AuthState =
                     msg: action.payload
                 }
             }
-            
+        
+        case "LOADING USER":
+            return {
+                ...state,
+                error:{
+                    msg: "",
+                    isError: false
+                },
+                loading: true
+            }
     
         default:
             return {

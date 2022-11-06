@@ -5,7 +5,9 @@ export interface ContextProps {
     isAuthenticated: boolean;
     user: null | IUser;
     error: IUserError;
-    loginUser: ( email: string, password: string ) => void; 
+    loading: boolean;
+    loginUser: ( email: string, password: string ) => void;
+    changeLoading: () => void; 
 };
 
 export const AuthContext = createContext({} as ContextProps);

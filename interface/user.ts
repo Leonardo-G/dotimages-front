@@ -1,7 +1,7 @@
 export interface IUser {
     name: string;
     email: string;
-    urlImage: string;
+    imageUrl: string;
 }
 
 export interface IUserError {
@@ -14,6 +14,10 @@ export interface IUserForm {
     email: string,
     password: string,
     repeatPassword: string;
+}
+
+export interface IUserApi extends IUser{
+    token: string;
 }
 
 export interface IUserErrorApi {

@@ -1,6 +1,6 @@
 import { InterfaceImages } from '../interface/images';
 import { IGifs, IGifsId } from '../interface/gifs';
-import { IUserErrorApi } from '../interface/user';
+import { IUserErrorApi, IUserApi } from '../interface/user';
 
 export const fetchApi = async ( url: string, type = "image" ) :Promise<InterfaceImages> => {
     const results = await fetch( `https://pixabay.com/api${ type === "image" ? "/" : "/" + type }?key=${ process.env.NEXT_PUBLIC_API_KEY }&${ url }&lang=es` );
@@ -16,7 +16,7 @@ export const fetchApiGiphy = async ( url: string, params: string, type: "gifs" |
     return response;
 } 
 
-export const fetchApiBackend = ( method: "POST" | "GET" | "DELETE", url: string, body?: any ): Promise<IUserErrorApi> => {
+export const fetchApiBackend = ( method: "POST" | "GET" | "DELETE", url: string, body?: any ): Promise<IUserApi> => {
     
     return new Promise ( async ( resolve, reject ) => {
         const results = await fetch( `${ process.env.NEXT_PUBLIC_API_BACKEND_URL }/api/${ url }`, {

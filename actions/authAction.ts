@@ -1,6 +1,8 @@
+import { IUserApi } from '../interface/user';
 import { 
     ERROR_LOGIN, 
-    LOADING_LOGIN 
+    LOADING_LOGIN, 
+    USER_LOGIN
 } from "../types"
 
 export const errorLoginAction = ( error: string ) => {
@@ -15,3 +17,14 @@ export const loadingUserAction = () => {
         type: LOADING_LOGIN
     }
 }
+
+export const loginUserAction = ( user: IUserApi ) => {
+    return {
+        type: USER_LOGIN,
+        payload: {
+            name: user.name,
+            email: user.email,
+            imageUrl: user.imageUrl
+        }
+    }
+} 

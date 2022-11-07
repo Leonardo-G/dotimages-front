@@ -4,11 +4,13 @@ import { IUser, IUserError, IUserForm, IUserErrorApi } from '../../interface/use
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
 import { fetchApiBackend } from '../../utils/fetchApi';
+import Cookies from "js-cookie";
 
 import { 
     errorLoginAction, 
     loadingUserAction 
 } from '../../actions/authAction';
+import { useRouter } from 'next/router';
 
 export interface AuthState {
     isAuthenticated: boolean,
@@ -34,6 +36,7 @@ interface Props {
 export const AuthProvider: FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( authReducer, INITIAL_STATE );
+    const router = useRouter();
 
     const loginUser = async ( email: string, password: string ) => {
         const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
@@ -69,7 +72,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         }
     }
 
-    const registerUser = ( user: IUserForm ) => {
+    const registerUser = async ( user: IUserForm ) => {
         const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
         console.log("GOLA")
@@ -98,7 +101,30 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             return
         }
 
-        dispatch( loadingUserAction() )
+        dispatch( loadingUserAction() );
+
+        try {
+            const userRegister = await fetchApiBackend("POST", "user/new-user", {
+                name: user.name,
+                email: user.email,
+                password: user.password
+            })
+            
+            Cookies.set("user", userRegister.token);
+            localStorage.setItem("userInfo", JSON.stringify({ 
+                name: userRegister.name,
+                email: userRegister.email,
+                imageUrl: userRegister.imageUrl
+            }));
+
+            router.reload()
+
+        } catch (error) {
+            const errors = error as IUserErrorApi 
+
+            dispatch( errorLoginAction( errors.msg ) );
+            return
+        }
     }
 
     return (

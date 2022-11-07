@@ -31,6 +31,7 @@ export const authReducer = ( state: AuthState, action: ActionType ): AuthState =
             return {
                 ...state,
                 isAuthenticated: false,
+                loading: false,
                 error: {
                     isError: true,
                     msg: action.payload

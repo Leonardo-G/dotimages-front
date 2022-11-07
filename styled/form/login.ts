@@ -57,6 +57,7 @@ export const ButtonSubmit = styled.div`
     border: none;
     cursor: pointer;
     width: 185px;
+    text-align: center;
 `
 
 export const TextLight = styled.p`

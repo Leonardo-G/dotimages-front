@@ -5,13 +5,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { UIContext } from '../../context/UI/UIContext'
 import { AuthContext } from '../../context/auth/AuthContext'
-import { BackgroundForm, ButtonClose, ButtonSubmit, CampoDiv, Error, Form, Input, Label, TextLight } from '../../styled/form/login'
+import { 
+    BackgroundForm, 
+    ButtonClose, 
+    ButtonSubmit, 
+    CampoDiv, 
+    Error, 
+    Form, 
+    Input, 
+    Label, 
+    TextLight 
+} from '../../styled/form/login'
+import { Spinner } from '../UI/Spinner'
 
 
 export const Login: FC = () => {
 
     const { handleCloseForm, showFormRegister, handleChangeForms } = useContext( UIContext );
-    const { loginUser, error } = useContext( AuthContext )
+    const { loginUser, error, registerUser, loading } = useContext( AuthContext )
     const [inputsValues, setInputsValues] = useState({
         name: "",
         email: "",
@@ -25,6 +36,11 @@ export const Login: FC = () => {
             [e.target.name]: e.target.value
         })
     }
+
+    const submitForm = () => {
+        
+        return showFormRegister ? registerUser( inputsValues ) : loginUser( inputsValues.email, inputsValues.password );
+    }
     
     return (
         <BackgroundForm>
@@ -35,15 +51,6 @@ export const Login: FC = () => {
             </ButtonClose>
             <h3>{ showFormRegister ? "Creese una nueva cuenta" : "Inicie Sesión con su cuenta"}</h3>
             <Form>
-                <CampoDiv>
-                    <Label>Correo</Label>
-                    <Input 
-                        type="email"
-                        value={ inputsValues.email }
-                        name="email"
-                        onChange={ changeinputsValues }
-                    />
-                </CampoDiv>
                 {
                     showFormRegister &&
                     <CampoDiv>
@@ -57,6 +64,15 @@ export const Login: FC = () => {
                         
                     </CampoDiv>
                 }
+                <CampoDiv>
+                    <Label>Correo</Label>
+                    <Input 
+                        type="email"
+                        value={ inputsValues.email }
+                        name="email"
+                        onChange={ changeinputsValues }
+                    />
+                </CampoDiv>
                 <CampoDiv>
                     <Label>Contraseña</Label>
                     <Input 
@@ -80,9 +96,15 @@ export const Login: FC = () => {
                 }
                 <Error isError={ error.isError }>{ error.msg }</Error>
                 <ButtonSubmit 
-                    onClick={ () => loginUser( inputsValues.email, inputsValues.password ) }    
+                    onClick={ !loading ? submitForm : undefined }    
                 >
-                    <p>{ showFormRegister ? "Registrarse" : "Iniciar sesión" }</p>
+                    {
+                        loading 
+                        ?
+                            <Spinner />
+                        : 
+                            <p>{ showFormRegister ? "Registrarse" : "Iniciar sesión" }</p>
+                    }
                 </ButtonSubmit>
             </Form>
             <TextLight

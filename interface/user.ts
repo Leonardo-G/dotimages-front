@@ -15,3 +15,9 @@ export interface IUserForm {
     password: string,
     repeatPassword: string;
 }
+
+export interface IUserErrorApi {
+    msg: string;
+    error: boolean;
+    type: string;
+}

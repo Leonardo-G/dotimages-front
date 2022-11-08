@@ -16,7 +16,8 @@ import {
 import { 
     errorLoginAction, 
     loadingUserAction, 
-    loginUserAction
+    loginUserAction,
+    logoutUserAction
 } from '../../actions/authAction';
 import { UIContext } from '../UI/UIContext';
 
@@ -192,14 +193,22 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
         } catch (error) {
             handleShowLogin();
+            Cookies.remove("user");
             sessionStorage.removeItem("userInfo");
             sessionStorage.removeItem("status");
-            Cookies.remove("user")
             dispatch( errorLoginAction( "Sesión expirada. Vuelva a iniciar sesión" ) );
             return
         }
+    }
 
+    const logout = () => {
+        Cookies.remove("user");
+        sessionStorage.removeItem("userInfo");
+        sessionStorage.removeItem("status");
+        dispatch( logoutUserAction() );
         
+        router.reload()
+
     }
 
     return (
@@ -208,7 +217,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
             //Methods
             loginUser,
-            registerUser
+            registerUser,
+            logout
         }} >
             { children }
         </AuthContext.Provider>

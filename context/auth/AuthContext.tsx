@@ -8,6 +8,7 @@ export interface ContextProps {
     loading: boolean;
     loginUser: ( email: string, password: string ) => void;
     registerUser: ( user: IUserForm) => void;
+    logout: () => void;
 };
 
 export const AuthContext = createContext({} as ContextProps);

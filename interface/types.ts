@@ -2,6 +2,7 @@
 export type IUserLogin    = "USER_LOGIN"
 export type IErrorLogin   = "ERROR_LOGIN"
 export type ILoadingLogin = "LOADING_USER"
+export type IUserLogout   = "USER_LOGOUT"
 
 
 // UI TYPES

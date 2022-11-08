@@ -6,7 +6,7 @@ const nextConfig = {
     styledComponents: true
   },
   images: { 
-    domains: ['pixabay.com', "cdn.pixabay.com", "media2.giphy.com", "media4.giphy.com", "media1.giphy.com", "media3.giphy.com"] 
+    domains: ['pixabay.com', "cdn.pixabay.com", "media2.giphy.com", "media4.giphy.com", "media1.giphy.com", "media3.giphy.com", "edeal.cl"] 
   } 
 }
 

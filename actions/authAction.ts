@@ -1,8 +1,9 @@
-import { IUserApi, IUser } from '../interface/user';
+import { IUser } from '../interface/user';
 import { 
     ERROR_LOGIN, 
     LOADING_LOGIN, 
-    USER_LOGIN
+    USER_LOGIN,
+    USER_LOGOUT
 } from "../types"
 
 export const errorLoginAction = ( error: string ) => {
@@ -24,3 +25,9 @@ export const loginUserAction = ( user: IUser ) => {
         payload: user
     }
 } 
+
+export const logoutUserAction = () => {
+    return {
+        type: USER_LOGOUT
+    }
+}

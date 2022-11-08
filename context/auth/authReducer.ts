@@ -4,25 +4,29 @@ import { AuthState } from "./AuthProvider"
 import { 
     IErrorLogin,
     ILoadingLogin,
-    IUserLogin 
+    IUserLogin,
+    IUserLogout
 } from "../../interface/types";
 
 import { 
     ERROR_LOGIN, 
     LOADING_LOGIN, 
-    USER_LOGIN 
+    USER_LOGIN,
+    USER_LOGOUT
 } from "../../types";
 
 type ActionType = 
     | { type: IUserLogin, payload: null | IUser }
     | { type: IErrorLogin, payload: string }
     | { type: ILoadingLogin }
+    | { type: IUserLogout }
 
 export const authReducer = ( state: AuthState, action: ActionType ): AuthState => {
     switch (action.type) {
         case USER_LOGIN:
             return {
                 ...state,
+                loading: false,
                 isAuthenticated: true,
                 user: action.payload as IUser
             }
@@ -46,6 +50,13 @@ export const authReducer = ( state: AuthState, action: ActionType ): AuthState =
                     isError: false
                 },
                 loading: true
+            }
+
+        case USER_LOGOUT:
+            return {
+                ...state,
+                isAuthenticated: false,
+                user: null
             }
     
         default:

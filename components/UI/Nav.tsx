@@ -1,10 +1,14 @@
-import Link from 'next/link';
 import React, { useContext } from 'react'
+import Image from 'next/image';
+import Link from 'next/link';
+
 import styled from "styled-components";
+
+import { AuthContext } from '../../context/auth/AuthContext';
 import { UIContext } from '../../context/UI/UIContext';
+import { Login } from '../form/Login';
 
 import { Container } from '../../styled/globals';
-import { Login } from '../form/Login';
 
 const Header = styled.header`
     background: #FFFFFF;
@@ -53,9 +57,32 @@ const EnlaceP = styled.div`
     display: inline-block;
 `
 
+const UserContainer = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+` 
+
+const User = styled.div`
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+`
+
 export const Nav = () => {
 
-    const { showFormLogin, handleShowLogin, handleShowRegister, showFormRegister } = useContext( UIContext )
+    const { 
+        showFormLogin, 
+        handleShowLogin, 
+        handleShowRegister, 
+        showFormRegister
+    } = useContext( UIContext );
+    const { 
+        user,
+        logout
+    } = useContext( AuthContext );
 
     return (
         <>
@@ -81,15 +108,31 @@ export const Nav = () => {
                                 <Enlace href="">Stickers</Enlace>
                             </Link>
                         </div>
-                        <div>
-                            <EnlaceP onClick={ () => handleShowLogin() }>
-                                <p>Iniciar Sesión</p>
-                            </EnlaceP>
+                        {
+                            !user ?
+                            <div>
+                                <EnlaceP onClick={ () => handleShowLogin() }>
+                                    <p>Iniciar Sesión</p>
+                                </EnlaceP>
 
-                            <BtnRegistro onClick={ handleShowRegister }>
-                                <p>Registrarse</p>
-                            </BtnRegistro>
-                        </div>
+                                <BtnRegistro onClick={ handleShowRegister }>
+                                    <p>Registrarse</p>
+                                </BtnRegistro>
+                            </div>
+                            :
+                            <UserContainer>
+                                <User>
+                                    <Image
+                                        src={ user.imageUrl ? user.imageUrl : "https://edeal.cl/assets/ico/default.webp" }
+                                        alt={ user.name + " DOTImages" }
+                                        layout="fill"
+                                    />
+                                </User>
+                                <Enlace onClick={ logout } >Salir</Enlace>
+                            </UserContainer>
+
+
+                        }
                     </Navigation>
                 </Container>
             </Header>

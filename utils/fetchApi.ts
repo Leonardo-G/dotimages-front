@@ -16,15 +16,16 @@ export const fetchApiGiphy = async ( url: string, params: string, type: "gifs" |
     return response;
 } 
 
-export const fetchApiBackend = ( method: "POST" | "GET" | "DELETE", url: string, body?: any ): Promise<IUserApi> => {
+export const fetchApiBackend = ( method: "POST" | "GET" | "DELETE", url: string, body?: any, token?: string ): Promise<IUserApi> => {
     
     return new Promise ( async ( resolve, reject ) => {
         const results = await fetch( `${ process.env.NEXT_PUBLIC_API_BACKEND_URL }/api/${ url }`, {
             method: method,
-            body: JSON.stringify(body),
+            body: body && JSON.stringify(body),
             headers: {
-                "Content-Type": "application/json"
-            }
+                "Content-Type": "application/json",
+                "token-auth": token && token
+            } as any
         } )
         const response = await results.json();
             

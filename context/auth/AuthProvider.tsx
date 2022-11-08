@@ -1,16 +1,24 @@
-import React, { FC, ReactNode, useReducer } from 'react'
+import React, { FC, ReactNode, useContext, useEffect, useReducer } from 'react'
 
-import { IUser, IUserError, IUserForm, IUserErrorApi } from '../../interface/user';
+import { useRouter } from 'next/router';
+import Cookies from "js-cookie";
+
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
 import { fetchApiBackend } from '../../utils/fetchApi';
-import Cookies from "js-cookie";
+import { 
+    IUser, 
+    IUserError, 
+    IUserForm, 
+    IUserErrorApi 
+} from '../../interface/user';
 
 import { 
     errorLoginAction, 
-    loadingUserAction 
+    loadingUserAction, 
+    loginUserAction
 } from '../../actions/authAction';
-import { useRouter } from 'next/router';
+import { UIContext } from '../UI/UIContext';
 
 export interface AuthState {
     isAuthenticated: boolean,
@@ -36,23 +44,47 @@ interface Props {
 export const AuthProvider: FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( authReducer, INITIAL_STATE );
+    const { handleShowLogin } = useContext( UIContext )
     const router = useRouter();
+
+    useEffect(() => {
+        if ( sessionStorage.getItem("status") ){
+            const user = JSON.parse(sessionStorage.getItem("userInfo")!) as IUser;
+
+            const userObject = { 
+                name: user.name,
+                email: user.email,
+                imageUrl: user.imageUrl
+            }
+
+            dispatch( loginUserAction(userObject) );
+            return
+        }
+
+        if ( !sessionStorage.getItem("status") && Cookies.get("user") ){
+            const token: string = Cookies.get("user")!;
+
+            validateToken(token)
+                .catch()
+
+        }
+    }, [])
 
     const loginUser = async ( email: string, password: string ) => {
         const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
         if ( email === "" || password === "" ){
-            dispatch( errorLoginAction("Completá todos los campos") )
+            dispatch( errorLoginAction("Completá todos los campos") );
             return
         }
         
         if ( !regExp.test(email) ){
-            dispatch( errorLoginAction("Ingrese un correo válido") )
+            dispatch( errorLoginAction("Ingrese un correo válido") );
             return
         }
 
         if ( password.length < 6 ){
-            dispatch( errorLoginAction("Se requiere 6 caracteres mínimo en la contraseña") )
+            dispatch( errorLoginAction("Se requiere 6 caracteres mínimo en la contraseña") );
             return
         }
         
@@ -63,7 +95,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 email,
                 password
             })
-            
+            Cookies.set("user", user.token);
+            sessionStorage.setItem("status", "AUTENTICADO");
+
+            const userObject = { 
+                name: user.name,
+                email: user.email,
+                imageUrl: user.imageUrl
+            }
+
+            sessionStorage.setItem("userInfo", JSON.stringify( userObject ));
+            dispatch( loginUserAction(userObject) );
+
+            router.reload()
         } catch (error) {
             const errors = error as IUserErrorApi 
 
@@ -75,19 +119,18 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     const registerUser = async ( user: IUserForm ) => {
         const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
-        console.log("GOLA")
         if ( user.email === "" || user.password === "" || user.repeatPassword === "" || user.name === "" ){
-            dispatch( errorLoginAction("Completá todos los campos") )
+            dispatch( errorLoginAction("Completá todos los campos") );
             return
         }
 
         if ( user.name.length < 6 ){
-            dispatch( errorLoginAction("El nombre tiene que tener 6 caracteres mínimo") )
+            dispatch( errorLoginAction("El nombre tiene que tener 6 caracteres mínimo") );
             return;
         }
         
         if ( !regExp.test(user.email) ){
-            dispatch( errorLoginAction("Ingrese un correo válido") )
+            dispatch( errorLoginAction("Ingrese un correo válido") );
             return;
         }
 
@@ -111,20 +154,52 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             })
             
             Cookies.set("user", userRegister.token);
-            localStorage.setItem("userInfo", JSON.stringify({ 
+            sessionStorage.setItem("status", "AUTENTICADO");
+
+            const userObject = { 
                 name: userRegister.name,
                 email: userRegister.email,
                 imageUrl: userRegister.imageUrl
-            }));
+            }
+
+            sessionStorage.setItem("userInfo", JSON.stringify( userObject ));
+            dispatch( loginUserAction(userObject) );
 
             router.reload()
 
         } catch (error) {
-            const errors = error as IUserErrorApi 
+            const errors = error as IUserErrorApi;
 
             dispatch( errorLoginAction( errors.msg ) );
             return
         }
+    }
+
+    const validateToken = async ( token: string ) => {
+        try {
+            const user = await fetchApiBackend("POST", "user/validate-token", "", token);
+            Cookies.set("user", user.token);
+            sessionStorage.setItem("status", "AUTENTICADO");
+
+            const userObject = { 
+                name: user.name,
+                email: user.email,
+                imageUrl: user.imageUrl
+            }
+
+            sessionStorage.setItem("userInfo", JSON.stringify( userObject ));
+            dispatch( loginUserAction(userObject) );
+
+        } catch (error) {
+            handleShowLogin();
+            sessionStorage.removeItem("userInfo");
+            sessionStorage.removeItem("status");
+            Cookies.remove("user")
+            dispatch( errorLoginAction( "Sesión expirada. Vuelva a iniciar sesión" ) );
+            return
+        }
+
+        
     }
 
     return (

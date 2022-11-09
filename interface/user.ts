@@ -25,3 +25,10 @@ export interface IUserErrorApi {
     error: boolean;
     type: string;
 }
+
+export interface AuthState {
+    isAuthenticated: boolean,
+    user: null | IUser,
+    error: IUserError,
+    loading: boolean,
+} 

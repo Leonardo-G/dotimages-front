@@ -1,16 +1,19 @@
 import React, { FC, ReactNode, useContext, useEffect, useReducer } from 'react'
 
 import { useRouter } from 'next/router';
+
 import Cookies from "js-cookie";
 
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
 import { fetchApiBackend } from '../../utils/fetchApi';
+import { UIContext } from '../UI/UIContext';
+
 import { 
     IUser, 
-    IUserError, 
     IUserForm, 
-    IUserErrorApi 
+    IUserErrorApi, 
+    AuthState
 } from '../../interface/user';
 
 import { 
@@ -19,14 +22,16 @@ import {
     loginUserAction,
     logoutUserAction
 } from '../../actions/authAction';
-import { UIContext } from '../UI/UIContext';
 
-export interface AuthState {
-    isAuthenticated: boolean,
-    user: null | IUser,
-    error: IUserError,
-    loading: boolean,
-} 
+import { 
+    validateBody, 
+    validateBodyRegister 
+} from '../../utils/validations';
+
+import { 
+    insertStorageUser, 
+    removeStorageUser 
+} from '../../utils/storage';
 
 const INITIAL_STATE: AuthState = {
     isAuthenticated: false,
@@ -67,26 +72,16 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
             validateToken(token)
                 .catch()
-
         }
     }, [])
 
     const loginUser = async ( email: string, password: string ) => {
-        const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
-
-        if ( email === "" || password === "" ){
-            dispatch( errorLoginAction("Completá todos los campos") );
-            return
-        }
         
-        if ( !regExp.test(email) ){
-            dispatch( errorLoginAction("Ingrese un correo válido") );
-            return
-        }
+        const isError = validateBody( email, password )
 
-        if ( password.length < 6 ){
-            dispatch( errorLoginAction("Se requiere 6 caracteres mínimo en la contraseña") );
-            return
+        if ( isError.error ) {
+            dispatch( errorLoginAction(isError.msg) );
+            return;
         }
         
         dispatch( loadingUserAction() );
@@ -96,16 +91,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 email,
                 password
             })
-            Cookies.set("user", user.token);
-            sessionStorage.setItem("status", "AUTENTICADO");
-
-            const userObject = { 
-                name: user.name,
-                email: user.email,
-                imageUrl: user.imageUrl
-            }
-
-            sessionStorage.setItem("userInfo", JSON.stringify( userObject ));
+            const userObject = insertStorageUser( user );
             dispatch( loginUserAction(userObject) );
 
             router.reload()
@@ -118,31 +104,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
 
     const registerUser = async ( user: IUserForm ) => {
-        const regExp = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+        const isError = validateBodyRegister( user )
 
-        if ( user.email === "" || user.password === "" || user.repeatPassword === "" || user.name === "" ){
-            dispatch( errorLoginAction("Completá todos los campos") );
-            return
-        }
-
-        if ( user.name.length < 6 ){
-            dispatch( errorLoginAction("El nombre tiene que tener 6 caracteres mínimo") );
+        if ( isError.error ) {
+            dispatch( errorLoginAction(isError.msg) );
             return;
-        }
-        
-        if ( !regExp.test(user.email) ){
-            dispatch( errorLoginAction("Ingrese un correo válido") );
-            return;
-        }
-
-        if ( user.password.length < 6 ){
-            dispatch( errorLoginAction("Se requiere 6 caracteres mínimo en la contraseña") )
-            return
-        }
-
-        if ( user.password !== user.repeatPassword ){
-            dispatch( errorLoginAction("Las contraseñas no coinciden") );
-            return
         }
 
         dispatch( loadingUserAction() );
@@ -154,16 +120,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 password: user.password
             })
             
-            Cookies.set("user", userRegister.token);
-            sessionStorage.setItem("status", "AUTENTICADO");
-
-            const userObject = { 
-                name: userRegister.name,
-                email: userRegister.email,
-                imageUrl: userRegister.imageUrl
-            }
-
-            sessionStorage.setItem("userInfo", JSON.stringify( userObject ));
+            const userObject = insertStorageUser( userRegister );
             dispatch( loginUserAction(userObject) );
 
             router.reload()
@@ -179,36 +136,23 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     const validateToken = async ( token: string ) => {
         try {
             const user = await fetchApiBackend("POST", "user/validate-token", "", token);
-            Cookies.set("user", user.token);
-            sessionStorage.setItem("status", "AUTENTICADO");
-
-            const userObject = { 
-                name: user.name,
-                email: user.email,
-                imageUrl: user.imageUrl
-            }
-
-            sessionStorage.setItem("userInfo", JSON.stringify( userObject ));
+            
+            const userObject = insertStorageUser( user );
             dispatch( loginUserAction(userObject) );
 
         } catch (error) {
+            removeStorageUser();
             handleShowLogin();
-            Cookies.remove("user");
-            sessionStorage.removeItem("userInfo");
-            sessionStorage.removeItem("status");
             dispatch( errorLoginAction( "Sesión expirada. Vuelva a iniciar sesión" ) );
             return
         }
     }
 
     const logout = () => {
-        Cookies.remove("user");
-        sessionStorage.removeItem("userInfo");
-        sessionStorage.removeItem("status");
+        removeStorageUser();
         dispatch( logoutUserAction() );
         
         router.reload()
-
     }
 
     return (

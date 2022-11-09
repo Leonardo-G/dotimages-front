@@ -61,7 +61,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 name: user.name,
                 email: user.email,
                 imageUrl: user.imageUrl
-            }
+            };
 
             dispatch( loginUserAction(userObject) );
             return

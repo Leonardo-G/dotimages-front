@@ -79,4 +79,7 @@ export const BtnIcono = styled.div`
     height: 30px;
     font-size: 17px;
     color: #000;
+    .icono {
+        color: #F2EA77;
+    }
 `

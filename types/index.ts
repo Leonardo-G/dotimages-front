@@ -1,4 +1,4 @@
-import { IErrorLogin, ILoadingLogin, IUserLogin, IUserLogout } from '../interface/types';
+import { IAddFavorite, IErrorLogin, ILoadingLogin, IRemoveFavorite, IUserLogin, IUserLogout } from '../interface/types';
 import { 
     IFormLogin, 
     IFormRegister, 
@@ -17,3 +17,7 @@ export const FORM_LOGIN: IFormLogin         = "FORM_LOGIN";
 export const FORM_REGISTER: IFormRegister   = "FORM_REGISTER";
 export const CLOSE_FORM: ICloseForm         = "CLOSE_FORM";
 export const CHANGE_FORM: IChangeForm       = "CHANGE_FORM";
+
+// FAVORITES REDUCER
+export const ADD_FAVORITE: IAddFavorite         = "ADD_FAVORITE";
+export const REMOVE_FAVORITE: IRemoveFavorite   = "REMOVE_FAVORITE";

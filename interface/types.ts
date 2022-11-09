@@ -10,3 +10,7 @@ export type IFormLogin     = "FORM_LOGIN"
 export type IFormRegister  = "FORM_REGISTER";
 export type ICloseForm     = "CLOSE_FORM";
 export type IChangeForm    = "CHANGE_FORM";
+
+// FAVORITES TYPE
+export type IAddFavorite   = "ADD_FAVORITE";
+export type IRemoveFavorite= "REMOVE_FAVORITE";

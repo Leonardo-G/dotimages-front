@@ -15,7 +15,7 @@ const Section = styled.section`
 
 interface Props {
     media: InterfaceImage[] | any[] | IGifsShort[];
-    type: "image" | "videos" | "gifs";
+    type: "image" | "videos" | "gifs" | "sticker";
 }
 
 export const Images: FC<Props> = ({ media, type }) => {

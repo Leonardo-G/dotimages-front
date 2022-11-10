@@ -26,7 +26,7 @@ const GifsPage: NextPage<Props> = ({ data }) => {
     const imageMemo = useMemo(() => (
         <Images 
             media={ data as IGifsShort[] }
-            type="gifs"
+            type="sticker"
         />
     ), [ data ])
 

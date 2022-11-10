@@ -7,6 +7,7 @@ export interface ContextProps {
     //METHODS
     addFavorite: ( favorite: IFavorites ) => void;
     removeFavorite: ( idFavorite: string ) => void;
+    addAllFavorites: () => void;
 };
 
 export const FavoritesContext = createContext({} as ContextProps);

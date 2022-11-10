@@ -13,7 +13,8 @@ import {
     IUser, 
     IUserForm, 
     IUserErrorApi, 
-    AuthState
+    AuthState,
+    IUserApi
 } from '../../interface/user';
 
 import { 
@@ -91,7 +92,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 email,
                 password
             })
-            const userObject = insertStorageUser( user );
+            const userObject = insertStorageUser( user as IUserApi );
             dispatch( loginUserAction(userObject) );
 
             router.reload()
@@ -120,7 +121,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 password: user.password
             })
             
-            const userObject = insertStorageUser( userRegister );
+            const userObject = insertStorageUser( userRegister as IUserApi );
             dispatch( loginUserAction(userObject) );
 
             router.reload()
@@ -137,7 +138,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         try {
             const user = await fetchApiBackend("POST", "user/validate-token", "", token);
             
-            const userObject = insertStorageUser( user );
+            const userObject = insertStorageUser( user as IUserApi );
             dispatch( loginUserAction(userObject) );
 
         } catch (error) {

@@ -12,5 +12,6 @@ export type ICloseForm     = "CLOSE_FORM";
 export type IChangeForm    = "CHANGE_FORM";
 
 // FAVORITES TYPE
-export type IAddFavorite   = "ADD_FAVORITE";
-export type IRemoveFavorite= "REMOVE_FAVORITE";
+export type IAddFavorite       = "ADD_FAVORITE";
+export type IRemoveFavorite    = "REMOVE_FAVORITE";
+export type IAddAllFavorite    = "ADD_ALL_FAVORITE";

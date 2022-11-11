@@ -39,7 +39,7 @@ export const Login: FC = () => {
 
     const submitForm = () => {
         
-        return showFormRegister ? registerUser( inputsValues ) : loginUser( inputsValues.email, inputsValues.password );
+        showFormRegister ? registerUser( inputsValues ) : loginUser( inputsValues.email, inputsValues.password );
     }
     
     return (

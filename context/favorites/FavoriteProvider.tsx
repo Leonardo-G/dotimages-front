@@ -1,10 +1,17 @@
-import React, { FC, ReactNode, useEffect, useReducer } from 'react'
-import { addAllFavoritesAction, addFavoriteAction, removeFavoriteAction } from '../../actions/favoritesAction';
+import React, { FC, ReactNode, useContext, useEffect, useReducer } from 'react'
+
+import Cookies from 'js-cookie';
+
+import { 
+    addAllFavoritesAction, 
+    addFavoriteAction, 
+    removeFavoriteAction 
+} from '../../actions/favoritesAction';
+
 import { FavoritesState, IFavorites } from '../../interface/favorites';
 import { FavoritesContext } from './FavoritesContext';
 import { favoritesReducer } from './favoritesReducer'
 import { fetchApiBackend } from '../../utils/fetchApi';
-import Cookies from 'js-cookie';
 import { removeStorageUser } from '../../utils/storage';
 
 const INITIAL_STATE: FavoritesState = {
@@ -29,11 +36,10 @@ export const FavoriteProvider: FC<Props> = ({ children }) => {
     const addFavorite = async ( favorite: IFavorites ) => {
         try {
             const results = await fetchApiBackend( "POST", "favorite/new", favorite, Cookies.get("user") );
-            console.log( results );
-            dispatch( addFavoriteAction( favorite ) )
+            dispatch( addFavoriteAction( results as IFavorites ) );
             
         } catch (error) {
-            console.log(error)
+            removeStorageUser();
         }
     }
 
@@ -42,7 +48,7 @@ export const FavoriteProvider: FC<Props> = ({ children }) => {
         try {
             await fetchApiBackend( "DELETE", `favorite/${ idFavorite }`, {}, Cookies.get("user") );
             dispatch( removeFavoriteAction( `${ idFavorite }` ) );
-            console.log("ELiminado")
+            
         } catch (error) {
             
             removeStorageUser();

@@ -73,7 +73,7 @@ export const validateBodyRegister = ( user: IUserForm ): IErrorReturn => {
     }
 
     return {
-        error: true,
+        error: false,
         msg: ""
     }
 }

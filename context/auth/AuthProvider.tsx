@@ -106,8 +106,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
     const registerUser = async ( user: IUserForm ) => {
         const isError = validateBodyRegister( user )
-
         if ( isError.error ) {
+            
             dispatch( errorLoginAction(isError.msg) );
             return;
         }
@@ -123,12 +123,13 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             
             const userObject = insertStorageUser( userRegister as IUserApi );
             dispatch( loginUserAction(userObject) );
+            
 
             router.reload()
 
         } catch (error) {
             const errors = error as IUserErrorApi;
-
+            
             dispatch( errorLoginAction( errors.msg ) );
             return
         }
@@ -136,7 +137,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
     const validateToken = async ( token: string ) => {
         try {
-            const user = await fetchApiBackend("POST", "user/validate-token", "", token);
+            const user = await fetchApiBackend("POST", "user/validate-token", {}, token);
             
             const userObject = insertStorageUser( user as IUserApi );
             dispatch( loginUserAction(userObject) );
@@ -147,6 +148,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             dispatch( errorLoginAction( "Sesión expirada. Vuelva a iniciar sesión" ) );
             return
         }
+    }
+
+    const loginRequired = () => {
+        handleShowLogin();
+        dispatch( errorLoginAction( "Se requiere iniciar sesión" ) );
     }
 
     const logout = () => {
@@ -163,7 +169,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             //Methods
             loginUser,
             registerUser,
-            logout
+            logout,
+            loginRequired
         }} >
             { children }
         </AuthContext.Provider>

@@ -15,3 +15,8 @@ export type IChangeForm    = "CHANGE_FORM";
 export type IAddFavorite       = "ADD_FAVORITE";
 export type IRemoveFavorite    = "REMOVE_FAVORITE";
 export type IAddAllFavorite    = "ADD_ALL_FAVORITE";
+
+//SAVED TYPE
+export type IAddSaved          = "ADD_SAVED";
+export type IRevomeSaved       = "REMOVE_SAVED";
+export type IAddAllSaved       = "ADD_ALL_SAVED" 

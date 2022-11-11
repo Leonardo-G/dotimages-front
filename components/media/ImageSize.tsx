@@ -18,6 +18,9 @@ import {
 
 import { FavoritesContext } from '../../context/favorites/FavoritesContext';
 import { Media } from './Media';
+import Cookies from 'js-cookie';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { SavedContext } from '../../context/saved/SavedContext';
 
 interface Props {
     src: string;
@@ -31,8 +34,11 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
 
     const [isHover, setIsHover] = useState(false);
     const [isHoverSave, setIsHoverSave] = useState(false);
-    const { addFavorite, removeFavorite, favorites } = useContext(FavoritesContext);
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
+    const { addFavorite, removeFavorite, favorites } = useContext(FavoritesContext);
+    const { addSaved, removeSaved, saved } = useContext( SavedContext )
+    const { loginRequired } = useContext( AuthContext )
     const video = useRef<HTMLVideoElement>(null);
 
     const handleHover = async (  ) => {
@@ -47,12 +53,16 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
     }
 
     const handleAddFavorite = () => {
-        setIsFavorite( true );
-        addFavorite({
-            favoriteId: `${id}`,
-            type,
-            urlImage: src
-        });
+        if ( sessionStorage.getItem("status") ){
+            addFavorite({
+                favoriteId: `${id}`,
+                type,
+                urlImage: src
+            });
+        } else {
+            
+            loginRequired();
+        }
     }
 
     const handleRemoveFavorite = () => {
@@ -60,10 +70,32 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
         setIsFavorite( false );
     }
 
+    const handleRemoveSaved = () => {
+        removeSaved( id );
+        setIsSaved( false );
+    }
+
+    const handleAddSaved = () => {
+        if ( sessionStorage.getItem("status") ){
+            addSaved({
+                savedId: `${ id }`,
+                type,
+                urlImage: src
+            });
+        } else {
+            loginRequired()
+        }
+    }
+
     useEffect(() => {
         favorites.some( f => f.favoriteId === `${id}` ) && setIsFavorite(true);
 
     }, [favorites])
+
+    useEffect(() => {
+        
+        saved.some( s => s.savedId === `${id}` ) && setIsSaved(true);
+    }, [ saved ])
     
     return (
         <ImageContainer 
@@ -104,9 +136,16 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type }) => {
                     <BtnIcono
                         onMouseOver={ () => setIsHoverSave( true ) }
                         onMouseLeave={ () => setIsHoverSave( false ) }
+                        onClick={
+                            isSaved
+                            ?   handleRemoveSaved
+                            :   handleAddSaved
+                        }
                     >
                         {
-                            isHoverSave
+                            isSaved ?
+                                <FontAwesomeIcon className='icono' icon={ faBookBookmarkBlack } />
+                            :   isHoverSave
                             ?
                                 <FontAwesomeIcon className='icono' icon={ faBookBookmarkBlack } />
                             :

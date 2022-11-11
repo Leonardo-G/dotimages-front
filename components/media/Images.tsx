@@ -16,9 +16,10 @@ const Section = styled.section`
 interface Props {
     media: InterfaceImage[] | any[] | IGifsShort[];
     type: "image" | "videos" | "gifs" | "sticker";
+    widthAuto?: boolean;
 }
 
-export const Images: FC<Props> = ({ media, type }) => {
+export const Images: FC<Props> = ({ media, type, widthAuto }) => {
 
     return (
         <Container className='container'>
@@ -33,6 +34,7 @@ export const Images: FC<Props> = ({ media, type }) => {
                                 tags={ i.tags }
                                 id={ i.id }
                                 type={ type }
+                                widthAuto={ widthAuto }
                             />
                         ))
                     }

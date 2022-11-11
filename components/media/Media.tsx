@@ -1,38 +1,23 @@
-import React, { FC, RefObject } from 'react'
+import React, { FC } from 'react'
 
 interface Props {
     type: "image" | "videos" | "gifs" | "sticker";
     src: string;
     description: string;
-    ref: RefObject<HTMLVideoElement> | null;
+    widthAuto?: boolean
 }
 
-export const Media: FC<Props> = ({ type, src, description, ref }) => {
-
+export const Media: FC<Props> = ({ type, src, description, widthAuto }) => {
+    
     if ( type === "image" ){
         return (
             <img
                 style={{
-                    width: "380px",
+                    width: widthAuto ? "100%" : "350px",
                 }}
                 src={ src }
                 alt={ description }
             />
-        )
-    }
-
-    if ( type === "videos" ){
-        return (
-            <video
-                ref={ ref }
-                style={{
-                    width: "380px",
-                    objectFit: "contain"
-                }}
-                src={ src }
-                muted
-                loop
-            ></video>
         )
     }
 

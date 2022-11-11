@@ -1,7 +1,7 @@
 export interface ISaved {
     id?: number;
     savedId: string;
-    type: string;
+    type: "image" | "videos" | "gifs" | "sticker";
     urlImage: string;
 }
 

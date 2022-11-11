@@ -3,13 +3,15 @@ import React, { FC, useContext, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as faHeartBlack } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
-import { BtnIcono } from '../../styled/ImageSize'
+
 import { AuthContext } from '../../context/auth/AuthContext'
 import { FavoritesContext } from '../../context/favorites/FavoritesContext'
 
+import { BtnIcono } from '../../styled/ImageSize'
+
 interface Props {
     id: string;
-    type: string;
+    type: "image" | "videos" | "gifs" | "sticker";
     src: string;
 }
 
@@ -22,7 +24,7 @@ export const Favorite: FC<Props> = ({ id, type, src }) => {
 
     useEffect(() => {
         favorites.some( f => f.favoriteId === `${id}` ) && setIsFavorite(true);
-
+        
     }, [favorites])
 
     const handleAddFavorite = () => {

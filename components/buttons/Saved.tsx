@@ -3,9 +3,11 @@ import React, { FC, useContext, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark as faBookBookmarkBlack} from '@fortawesome/free-solid-svg-icons'
 import { faBookmark } from '@fortawesome/free-regular-svg-icons'
-import { BtnIcono } from '../../styled/ImageSize'
-import { SavedContext } from '../../context/saved/SavedContext'
-import { AuthContext } from '../../context/auth/AuthContext'
+
+import { SavedContext } from '../../context/saved/SavedContext';
+import { AuthContext } from '../../context/auth/AuthContext';
+
+import { BtnIcono } from '../../styled/ImageSize';
 
 interface Props {
     id: string;
@@ -30,7 +32,7 @@ export const Saved: FC<Props> = ({ id, type, src }) => {
     }
 
     const handleAddSaved = () => {
-        if ( sessionStorage.getItem("status") ){
+        if ( sessionStorage.getItem("status") ) {
             addSaved({
                 savedId: `${ id }`,
                 type,
@@ -40,11 +42,10 @@ export const Saved: FC<Props> = ({ id, type, src }) => {
             loginRequired()
         }
     }
-
     
     useEffect(() => {
-        
         saved.some( s => s.savedId === id ) && setIsSaved(true);
+        
     }, [ saved ])
     
     return (

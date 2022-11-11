@@ -61,6 +61,30 @@ const UserContainer = styled.div`
     display: flex;
     align-items: center;
     column-gap: 10px;
+    position: relative;
+
+    .containerNavTarget {
+        position: absolute;
+        left: 0px;
+        top: 50px;
+        background: #222C40;
+        z-index: 999;
+        visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        a {
+            color: #fff;
+            padding: 20px 20px; 
+            border-bottom: 1px solid #fff;
+            &:last-of-type{
+                border-bottom: none;
+            }
+        }
+    }
+
+    &:hover .containerNavTarget{
+        visibility: visible;
+    }
 ` 
 
 const User = styled.div`
@@ -68,7 +92,6 @@ const User = styled.div`
     height: 50px;
     border-radius: 50px;
     position: relative;
-    overflow: hidden;
 `
 
 export const Nav = () => {
@@ -129,9 +152,11 @@ export const Nav = () => {
                                     />
                                 </User>
                                 <Enlace onClick={ logout } >Salir</Enlace>
+                                <div className='containerNavTarget'>
+                                    <Link href="/favorites">Favoritos</Link>
+                                    <Link href="/saved">Guardados</Link>
+                                </div>
                             </UserContainer>
-
-
                         }
                     </Navigation>
                 </Container>

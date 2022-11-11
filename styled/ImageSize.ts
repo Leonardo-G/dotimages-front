@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const ImageContainer = styled.div`
     position: relative;
-    width: 350px;
+    width: ${ ({ auto }: { auto?: boolean }) => auto ? "100%" : "350px"  } ;
     cursor: pointer;
     transition: .3s all ease;
     overflow: hidden; 

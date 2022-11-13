@@ -16,6 +16,16 @@ export const PosCenter = styled.div`
     h1{
       width: 50%
     }
+
+    @media (max-width: 720px){
+        flex-direction: column;
+        row-gap: 50px;
+        width: 100%;
+        h1{
+          width: 100%;
+          text-align: center;
+        }
+    }
 `
 
 export const BarraBusqueda = styled.div`
@@ -27,6 +37,11 @@ export const BarraBusqueda = styled.div`
     border-radius: 50px;
     display: flex;
     column-gap: 20px;
+    
+    @media (max-width: 720px){
+        width: 90%;
+        margin: 0;
+    }
 `
 
 export const InputSearch = styled.input`
@@ -35,6 +50,10 @@ export const InputSearch = styled.input`
     outline: none;
     color: #fff;
     font-size: 16px;
+
+    @media (max-width: 720px){
+        width: 100%;
+    }
 `
 
 export const Subtitle = styled.div`
@@ -80,16 +99,16 @@ export const PaginationStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    column-gap: 30px;
-    margin: 30px 0;
+    column-gap: 15px;
+    margin: 15px 0;
 `
 
 export const Page = styled.div`
     cursor: pointer;
     background: ${ ({color}) => color };
     border-radius: 6px;
-    padding: 20px;
-    font-size: 20px;
+    padding: 10px;
+    font-size: 16px;
     color: ${ ({color}) => color === "#222C40" ? "#fff" : "#000" };
     &:hover{
         background: #222C40;
@@ -101,12 +120,12 @@ export const NextPageStyle = styled.div`
     cursor: pointer;
     background: ${ ({color}) => color };
     border-radius: 50%;
-    width: 55px;
-    height: 55px;
+    width: 30px;
+    height: 30px;
     position: relative;
     &:hover{
         background: #222C40;
-        color: #fff
+        color: #fff;
     }
 `
 

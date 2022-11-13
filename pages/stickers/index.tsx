@@ -1,17 +1,26 @@
-import Link from 'next/link'
 import React, { KeyboardEvent, useMemo, useState } from 'react'
 import { GetStaticProps, NextPage } from 'next'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { LayoutPage } from '../../components/layout/LayoutPage'
 import { Portada } from '../../components/UI/Portada'
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Subtitle } from '../../styled/pages/home';
 import { fetchApiGiphy } from '../../utils/fetchApi'
 import { Images } from '../../components/media/Images'
+
 import { IGifs, IGifsShort } from '../../interface/gifs';
-import { useRouter } from 'next/router'
+
+import { 
+    BarraBusqueda, 
+    InputSearch, 
+    PosCenter, 
+    PosInitial, 
+    Subtitle 
+} from '../../styled/pages/home';
+
 import { Container } from '../../styled/globals'
 
 interface Props {
@@ -26,7 +35,7 @@ const GifsPage: NextPage<Props> = ({ data }) => {
     const imageMemo = useMemo(() => (
         <Images 
             media={ data as IGifsShort[] }
-            type="sticker"
+            type="stickers"
         />
     ), [ data ])
 

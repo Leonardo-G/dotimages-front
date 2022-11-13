@@ -45,7 +45,7 @@ const HomePage: NextPage<Props> = ({ data }) => {
                         <Link href={`/images/q=${ inputSearch }`} passHref>
                             <FontAwesomeIcon icon={ faMagnifyingGlass }/>
                         </Link>
-                        <InputSearch 
+                        <InputSearch
                             type="text"
                             placeholder="Buscar... Ejemplo: Pelota"
                             value={ inputSearch }

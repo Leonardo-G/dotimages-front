@@ -19,6 +19,9 @@ const Section = styled.section`
     margin-top: 50px;
     display: flex;
     column-gap: 40px;
+    @media (max-width: 720px){
+        flex-direction: column;
+    }
 `
 
 const Fila1 = styled.div`
@@ -28,6 +31,11 @@ const Fila1 = styled.div`
 const HeaderImage = styled.div`
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 720px){
+        flex-direction: column;
+        row-gap: 20px;
+    }
 `
 
 const Icons = styled.div`
@@ -100,12 +108,11 @@ const ButtonWeb = styled.div`
 
 interface Props {
     data: InterfaceImages | IVideos | IGifsId;
-    type: "image" | "videos" | "gifs";
+    type: "image" | "videos" | "gifs" | "stickers";
 }
 
 const MediaPage: NextPage<Props> = ({ data, type }) => {
 
-    console.log(data)
     return (
         <LayoutPage title={ `DOTImages` }>
             <Container>
@@ -113,7 +120,7 @@ const MediaPage: NextPage<Props> = ({ data, type }) => {
                     <Fila1>
                         <HeaderImage>
                             {
-                                type !== "gifs" &&
+                                type !== "gifs" && type !== "stickers" &&
                                 
                                 <>
                                     <Icons>
@@ -134,7 +141,6 @@ const MediaPage: NextPage<Props> = ({ data, type }) => {
                                         { (data as InterfaceImages | IVideos).hits[0].tags }
                                     </Tags>
                                 </>
-
                             }
                         </HeaderImage>
                         <ImageContainerSize>
@@ -163,7 +169,7 @@ const MediaPage: NextPage<Props> = ({ data, type }) => {
                                         width: "100%",
                                         objectFit: "contain"
                                     }}
-                                    src={ ( data as IGifsId).data.images.hd.mp4 }
+                                    src={ ( data as IGifsId ).data.images?.downsized_small ? ( data as IGifsId ).data.images.downsized_small.mp4 : "" }
                                     loop 
                                     muted
                                     autoPlay={true}
@@ -183,7 +189,7 @@ const MediaPage: NextPage<Props> = ({ data, type }) => {
                             </ImageUser>
                             <p>{ type === "image" || type === "videos" ? ( data as InterfaceImages ).hits[0].user : ( data as IGifsId ).data.user.username }</p>
                         </User>
-                        <Link href={ type === "image" || type === "videos" ? (data as InterfaceImages).hits[0].pageURL : (data as IGifsId).data.url }>
+                        <Link href={ type === "image" || type === "videos" ? `${(data as InterfaceImages).hits[0].pageURL}` : `${(data as IGifsId).data.url }`}>
                             <ButtonWeb>
                                 <FontAwesomeIcon icon={ faGlobe }/>
                                 <p>Ir a la web</p>
@@ -201,10 +207,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { media: [ type, id ] } =  params as { media: string[] };
     let data;
     
-    if ( type === "gifs" ){
+    if ( type === "gifs" || type === "stickers") {
         data = await fetchApiGiphy("", id, "gifs");
-        console.log(data)
-    } else{
+        
+    } else {
         data = await fetchApi( `id=${ id }`, type );
     }
     

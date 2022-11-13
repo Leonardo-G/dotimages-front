@@ -84,7 +84,7 @@ const VideoBusquedaPage: NextPage<Props> = ({ data, search, page, pagination }) 
                         <FontAwesomeIcon 
                             className='icon' 
                             icon={ faXmark }
-                            onClick={ removeSearch }
+                            onClick={ () => router.push("/videos") }
                         />
                     </Tags>
                 </DivBusqueda>

@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 
 interface Props {
-    type: "image" | "videos" | "gifs" | "sticker";
+    type: "image" | "videos" | "gifs" | "stickers";
     src: string;
     description: string;
-    widthAuto?: boolean
+    widthAuto?: boolean;
 }
 
 export const Media: FC<Props> = ({ type, src, description, widthAuto }) => {
@@ -13,10 +13,10 @@ export const Media: FC<Props> = ({ type, src, description, widthAuto }) => {
         return (
             <img
                 style={{
-                    width: widthAuto ? "100%" : "350px",
+                    width: "100%",
                 }}
                 src={ src }
-                alt={ description }
+                alt={ "Imagen expirada por la API Pixabay" }
             />
         )
     }
@@ -25,7 +25,6 @@ export const Media: FC<Props> = ({ type, src, description, widthAuto }) => {
         <video
             style={{
                 width: "100%",
-                objectFit: "contain"
             }}
             src={ src }
             loop 

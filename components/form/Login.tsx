@@ -7,6 +7,7 @@ import { UIContext } from '../../context/UI/UIContext'
 import { AuthContext } from '../../context/auth/AuthContext'
 import { 
     BackgroundForm, 
+    BackgroundWindow, 
     ButtonClose, 
     ButtonSubmit, 
     CampoDiv, 
@@ -43,73 +44,75 @@ export const Login: FC = () => {
     }
     
     return (
-        <BackgroundForm>
-            <ButtonClose
-                onClick={ handleCloseForm }
-            >
-                <FontAwesomeIcon icon={ faXmark }/>
-            </ButtonClose>
-            <h3>{ showFormRegister ? "Creese una nueva cuenta" : "Inicie Sesión con su cuenta"}</h3>
-            <Form>
-                {
-                    showFormRegister &&
+        <BackgroundWindow>
+
+            <BackgroundForm>
+                <ButtonClose
+                    onClick={ handleCloseForm }
+                >
+                    <FontAwesomeIcon icon={ faXmark }/>
+                </ButtonClose>
+                <h3>{ showFormRegister ? "Creese una nueva cuenta" : "Inicie Sesión con su cuenta"}</h3>
+                <Form>
+                    {
+                        showFormRegister &&
+                        <CampoDiv>
+                            <Label>Nombre</Label>
+                            <Input 
+                                type="text"
+                                value={ inputsValues.name }
+                                name="name"
+                                onChange={ changeinputsValues }
+                            />
+                        </CampoDiv>
+                    }
                     <CampoDiv>
-                        <Label>Nombre</Label>
+                        <Label>Correo</Label>
                         <Input 
-                            type="text"
-                            value={ inputsValues.name }
-                            name="name"
+                            type="email"
+                            value={ inputsValues.email }
+                            name="email"
                             onChange={ changeinputsValues }
                         />
-                        
                     </CampoDiv>
-                }
-                <CampoDiv>
-                    <Label>Correo</Label>
-                    <Input 
-                        type="email"
-                        value={ inputsValues.email }
-                        name="email"
-                        onChange={ changeinputsValues }
-                    />
-                </CampoDiv>
-                <CampoDiv>
-                    <Label>Contraseña</Label>
-                    <Input 
-                        type="password"
-                        value={ inputsValues.password }
-                        name="password"
-                        onChange={ changeinputsValues }
-                    />
-                </CampoDiv>
-                {
-                    showFormRegister &&
                     <CampoDiv>
-                        <Label>Repetir Contraseña</Label>
+                        <Label>Contraseña</Label>
                         <Input 
                             type="password"
-                            value={ inputsValues.repeatPassword }
-                            name="repeatPassword"
+                            value={ inputsValues.password }
+                            name="password"
                             onChange={ changeinputsValues }
                         />
                     </CampoDiv>
-                }
-                <Error isError={ error.isError }>{ error.msg }</Error>
-                <ButtonSubmit 
-                    onClick={ !loading ? submitForm : undefined }    
-                >
                     {
-                        loading 
-                        ?
-                            <Spinner />
-                        : 
-                            <p>{ showFormRegister ? "Registrarse" : "Iniciar sesión" }</p>
+                        showFormRegister &&
+                        <CampoDiv>
+                            <Label>Repetir Contraseña</Label>
+                            <Input 
+                                type="password"
+                                value={ inputsValues.repeatPassword }
+                                name="repeatPassword"
+                                onChange={ changeinputsValues }
+                            />
+                        </CampoDiv>
                     }
-                </ButtonSubmit>
-            </Form>
-            <TextLight
-                onClick={ handleChangeForms }
-            >{ showFormRegister ? "Ya tengo cuenta" : "Nueva Cuenta" }</TextLight>
-        </BackgroundForm>
+                    <Error isError={ error.isError }>{ error.msg }</Error>
+                    <ButtonSubmit 
+                        onClick={ !loading ? submitForm : undefined }    
+                    >
+                        {
+                            loading 
+                            ?
+                                <Spinner />
+                            : 
+                                <p>{ showFormRegister ? "Registrarse" : "Iniciar sesión" }</p>
+                        }
+                    </ButtonSubmit>
+                </Form>
+                <TextLight
+                    onClick={ handleChangeForms }
+                >{ showFormRegister ? "Ya tengo cuenta" : "Nueva Cuenta" }</TextLight>
+            </BackgroundForm>
+        </BackgroundWindow>
     )
 }

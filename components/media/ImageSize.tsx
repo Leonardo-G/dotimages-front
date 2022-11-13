@@ -14,11 +14,11 @@ import {
 } from '../../styled/ImageSize';
 
 interface Props {
-    src: string;
+    src: string | null;
     description?: string;
     tags?: string;
     id: string;
-    type: "image" | "videos" | "gifs" | "sticker";
+    type: "image" | "videos" | "gifs" | "stickers";
     widthAuto?: boolean
 }
 
@@ -36,7 +36,11 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type, widthAu
     const handleLeaveHover = () => {
         video.current && video.current.pause();
     }
-    
+
+    if( !src ){
+        return <></>
+    }
+
     return (
         <ImageContainer 
             onMouseOver={ handleHover }
@@ -49,7 +53,7 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type, widthAu
                     <video
                         ref={ video }
                         style={{
-                            width: widthAuto ? "100%" : "380px",
+                            width: "100%",
                             objectFit: "contain"
                         }}
                         src={ src }
@@ -67,7 +71,7 @@ export const ImageSize: FC<Props> = ({ src, description, tags, id, type, widthAu
 
             }
             <div className='headerImage'>
-                <div>
+                <div className='tags'>
                     <p>{ tags }</p>
                 </div>
                 <Iconos>

@@ -1,5 +1,13 @@
 import styled from "styled-components"
 
+export const BackgroundWindow = styled.div`
+    position: fixed;
+    background: #00000047;
+    z-index: 99; 
+    width: 100%;
+    height: 100vh;
+`
+
 export const BackgroundForm = styled.div`
     background: #fff;
     padding: 40px 60px;
@@ -10,6 +18,11 @@ export const BackgroundForm = styled.div`
     z-index: 99;
     border-radius: 15px;
     box-shadow: 0px 0px 40px rgb(0 0 0 / 25%);
+
+    @media (max-width: 720px){
+        width: 95%;
+        padding: 40px 20px;
+    }
 
     h3{
         font-size: 28px;
@@ -46,6 +59,10 @@ export const Input = styled.input`
     outline: none;
     width: 400px;
     color: #fff;
+
+    @media (max-width: 720px){
+        width: 100%;
+    }
 `
 
 export const ButtonSubmit = styled.div`

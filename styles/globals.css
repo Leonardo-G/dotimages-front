@@ -21,3 +21,8 @@ a{
 p, a, h1, h2, h3{
   font-family: "Roboto", sans-serif;
 }
+
+.navResponsiveTarget{
+  transform: translateX(0%) !important;
+  transition: all .2s ease;
+}

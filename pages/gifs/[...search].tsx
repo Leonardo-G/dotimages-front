@@ -1,17 +1,29 @@
 import React, { KeyboardEvent, useMemo, useState } from 'react';
+
 import { NextPage, GetServerSideProps } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
+
+import { LayoutPage } from '../../components/layout/LayoutPage';
+import { Portada } from '../../components/UI/Portada';
+import { Images } from '../../components/media/Images';
+import { PaginationDiv } from '../../components/pagination/PaginationDiv';
+
 import { fetchApiGiphy } from '../../utils/fetchApi';
 import { IGifs, IGifsShort, Pagination } from '../../interface/gifs';
-import { LayoutPage } from '../../components/layout/LayoutPage';
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Tags } from '../../styled/pages/home';
-import { Portada } from '../../components/UI/Portada';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { Images } from '../../components/media/Images';
-import { useRouter } from 'next/router';
+
 import { Container } from '../../styled/globals';
-import { PaginationDiv } from '../../components/pagination/PaginationDiv';
+import { 
+    BarraBusqueda, 
+    DivBusqueda, 
+    InputSearch, 
+    PosCenter, 
+    PosInitial, 
+    Tags 
+} from '../../styled/pages/home';
 
 interface Props {
     data: IGifsShort[];
@@ -44,7 +56,7 @@ const GifsSearchPage: NextPage<Props> = ({ data, search, page, pagination }) => 
     }
 
     return (
-        <LayoutPage title={`DOTImages | ${ search }}`}>
+        <LayoutPage title={`DOTImages | ${ search }`}>
             <PosInitial>
                 <Portada
                     height='630px'
@@ -69,9 +81,17 @@ const GifsSearchPage: NextPage<Props> = ({ data, search, page, pagination }) => 
                 </PosCenter>
             </PosInitial>
             <Container>
-                <Tags>
-                    <p>{ search }</p>
-                </Tags>
+                <DivBusqueda>
+                    <p>Búsqueda: </p>
+                    <Tags>
+                        <p>{ search }</p>
+                        <FontAwesomeIcon 
+                            className='icon' 
+                            icon={ faXmark }
+                            onClick={ () => router.push("/gifs") }
+                        />
+                    </Tags>
+                </DivBusqueda>
             </Container>
             { imageMemo }
             <Container>

@@ -11,7 +11,7 @@ import { BtnIcono } from '../../styled/ImageSize';
 
 interface Props {
     id: string;
-    type: string;
+    type: "image" | "videos" | "gifs" | "stickers";
     src: string;
 }
 

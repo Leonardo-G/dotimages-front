@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     
     const gifsData = data?.map( gif => {
         return {
-            url: gif.images.downsized_small.mp4,
+            url: gif.images.downsized_small.mp4 || null,
             id: gif.id,
         }
     })

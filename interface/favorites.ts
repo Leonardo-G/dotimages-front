@@ -1,7 +1,7 @@
 export interface IFavorites {
     id?: number;
     favoriteId: string;
-    type: "image" | "videos" | "gifs" | "sticker";
+    type: "image" | "videos" | "gifs" | "stickers";
     urlImage: string;
 }
 

@@ -5,10 +5,10 @@ import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { Container } from '../../styled/globals';
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Tags } from '../../styled/pages/home';
+import { BarraBusqueda, DivBusqueda, InputSearch, PosCenter, PosInitial, Tags } from '../../styled/pages/home';
 import { fetchApiGiphy } from '../../utils/fetchApi';
 import { IGifs, IGifsShort, Pagination } from '../../interface/gifs';
 import { LayoutPage } from '../../components/layout/LayoutPage';
@@ -73,9 +73,17 @@ const StickersBusquedaPage: NextPage<Props> = ({ data, search, page, pagination 
                 </PosCenter>
             </PosInitial>
             <Container>
-                <Tags>
-                    <p>{ search }</p>
-                </Tags>
+                <DivBusqueda>
+                    <p>Búsqueda: </p>
+                    <Tags>
+                        <p>{ search }</p>
+                        <FontAwesomeIcon 
+                            className='icon' 
+                            icon={ faXmark }
+                            onClick={ () => router.push("/stickers") }
+                        />
+                    </Tags>
+                </DivBusqueda>
             </Container>
             
             { imageMemo }

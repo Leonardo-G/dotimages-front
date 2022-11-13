@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,6 +9,9 @@ import { UIContext } from '../../context/UI/UIContext';
 import { Login } from '../form/Login';
 
 import { Container } from '../../styled/globals';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+
 
 const Header = styled.header`
     background: #FFFFFF;
@@ -31,6 +34,12 @@ const Navigation = styled.nav`
     justify-content: space-between;
     align-items: center;
     height: 62px;
+
+    @media (max-width: 1080px){
+        .navOn{
+            display: none;
+        }
+    }
 `
 const Enlace = styled.a`
     padding: 15px 10px;
@@ -49,6 +58,11 @@ const BtnRegistro = styled.div`
         border-radius: 5px;
         transition: .3s all ease;
     }
+
+    @media (max-width: 1080px){
+        font-size: 22px;
+        text-align: center;
+    }
 `
 
 const EnlaceP = styled.div`
@@ -63,6 +77,17 @@ const UserContainer = styled.div`
     column-gap: 10px;
     position: relative;
 
+    @media (max-width: 1080px){
+    }
+
+` 
+
+const User = styled.div`
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    position: relative;
+    
     .containerNavTarget {
         position: absolute;
         left: 0px;
@@ -82,16 +107,63 @@ const UserContainer = styled.div`
         }
     }
 
+    @media (max-width: 1080px){
+        .containerNavTarget {
+            position: relative;        
+            visibility: visible;
+            align-items: center;
+        }
+    }
+
     &:hover .containerNavTarget{
         visibility: visible;
     }
-` 
+`
 
-const User = styled.div`
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
+const NavButtonResponsive= styled.div`
+    font-size: 25px;
+    color: #222C40;
+    cursor: pointer;
+`
+
+const NavResponsive = styled.div`
     position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: #222C40;
+    z-index: 999;
+    transform: translateX(100%);
+    transition: all .2s ease;
+`
+
+const NavColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`
+
+const EnlaceColumn = styled.a`
+    color: #fff;
+    padding: 20px;
+    font-weight: 600;
+    font-size: 25px;
+`
+
+const MarkNav = styled.div`
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 45px;
+    color: #222C40;
+    cursor: pointer;
+    color: #fff;
+    
 `
 
 export const Nav = () => {
@@ -102,10 +174,13 @@ export const Nav = () => {
         handleShowRegister, 
         showFormRegister
     } = useContext( UIContext );
+    
     const { 
         user,
         logout
     } = useContext( AuthContext );
+
+    const [openNavResponsive, setOpenNavResponsive] = useState(false);
 
     return (
         <>
@@ -117,7 +192,7 @@ export const Nav = () => {
                 <Container>
                     <Navigation>
                         <Brand>DOT<span>Images</span></Brand>
-                        <div>
+                        <div className='navOn'>
                             <Link href="/">
                                 <Enlace>Imágenes</Enlace>
                             </Link>
@@ -128,36 +203,99 @@ export const Nav = () => {
                                 <Enlace>Gifs</Enlace>
                             </Link>
                             <Link href="/stickers">
-                                <Enlace href="">Stickers</Enlace>
+                                <Enlace>Stickers</Enlace>
                             </Link>
                         </div>
                         {
                             !user ?
-                            <div>
-                                <EnlaceP onClick={ () => handleShowLogin() }>
-                                    <p>Iniciar Sesión</p>
-                                </EnlaceP>
+                                <div className='navOn'>
+                                    <EnlaceP onClick={ () => handleShowLogin() }>
+                                        <p>Iniciar Sesión</p>
+                                    </EnlaceP>
 
-                                <BtnRegistro onClick={ handleShowRegister }>
-                                    <p>Registrarse</p>
-                                </BtnRegistro>
-                            </div>
-                            :
-                            <UserContainer>
-                                <User>
-                                    <Image
-                                        src={ user.imageUrl ? user.imageUrl : "https://edeal.cl/assets/ico/default.webp" }
-                                        alt={ user.name + " DOTImages" }
-                                        layout="fill"
-                                    />
-                                </User>
-                                <Enlace onClick={ logout } >Salir</Enlace>
-                                <div className='containerNavTarget'>
-                                    <Link href="/favorites">Favoritos</Link>
-                                    <Link href="/saved">Guardados</Link>
+                                    <BtnRegistro onClick={ handleShowRegister }>
+                                        <p>Registrarse</p>
+                                    </BtnRegistro>
                                 </div>
-                            </UserContainer>
+                            :
+                                <UserContainer className='navOn'>
+                                    <User>
+                                        <Image
+                                            src={ user.imageUrl ? user.imageUrl : "https://edeal.cl/assets/ico/default.webp" }
+                                            alt={ user.name + " DOTImages" }
+                                            layout="fill"
+                                        />
+                                        <div className='containerNavTarget'>
+                                            <Link href="/favorites">Favoritos</Link>
+                                            <Link href="/saved">Guardados</Link>
+                                        </div>
+                                    </User>
+                                    <Enlace onClick={ logout } >Salir</Enlace>
+                                </UserContainer>
                         }
+                        <NavButtonResponsive
+                            onClick={ () => setOpenNavResponsive( true ) }
+                        >
+                            <FontAwesomeIcon icon={ faBars }/>
+                        </NavButtonResponsive>
+                        <NavResponsive 
+                            className={ openNavResponsive ? "navResponsiveTarget" : "" }
+                        >
+                            <NavColumn>
+                                <Link href="/">
+                                    <EnlaceColumn>Imágenes</EnlaceColumn>
+                                </Link>
+                                <Link href="/videos">
+                                    <EnlaceColumn>Videos</EnlaceColumn>
+                                </Link>
+                                <Link href="/gifs">
+                                    <EnlaceColumn>Gifs</EnlaceColumn>
+                                </Link>
+                                <Link href="/stickers">
+                                    <EnlaceColumn>Stickers</EnlaceColumn>
+                                </Link>
+                                {
+                                    !user ?
+                                        <>
+                                            <EnlaceColumn onClick={ () => {
+                                                handleShowLogin()
+                                                setOpenNavResponsive(false);
+                                            } }>
+                                                <p>Iniciar Sesión</p>
+                                            </EnlaceColumn>
+
+                                            <BtnRegistro onClick={ () => {
+                                                handleShowRegister();
+                                                setOpenNavResponsive(false);
+                                            } }>
+                                                <p>Registrarse</p>
+                                            </BtnRegistro>
+                                        </>
+                                    :
+                                        <UserContainer>
+                                            <User>
+                                                <Image
+                                                    src={ user.imageUrl ? user.imageUrl : "https://edeal.cl/assets/ico/default.webp" }
+                                                    alt={ user.name + " DOTImages" }
+                                                    layout="fill"
+                                                />
+                                            <div className='containerNavTarget'>
+                                                <Link href="/favorites">Favoritos</Link>
+                                                <Link href="/saved">Guardados</Link>
+                                            </div>
+                                            </User>
+                                            <EnlaceColumn onClick={ logout } >Salir</EnlaceColumn>
+                                        </UserContainer>
+                                }
+                            </NavColumn>
+                            <MarkNav
+                                onClick={ () => setOpenNavResponsive( false ) }
+                            >
+                                <FontAwesomeIcon 
+                                    icon={ faXmark }
+                                />
+                            </MarkNav>
+                        </NavResponsive>
                     </Navigation>
                 </Container>
             </Header>

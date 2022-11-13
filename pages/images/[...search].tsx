@@ -6,9 +6,6 @@ import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { BarraBusqueda, InputSearch, PosCenter, PosInitial, Tags, DivBusqueda } from '../../styled/pages/home';
-import { Container } from '../../styled/globals';
-
 import { fetchApi } from '../../utils/fetchApi';
 import { Images } from '../../components/media/Images';
 import { Portada } from '../../components/UI/Portada';
@@ -17,6 +14,16 @@ import { LayoutPage } from '../../components/layout/LayoutPage';
 
 import { InterfaceImages } from '../../interface/images';
 import { Pagination } from '../../interface/gifs';
+
+import { 
+    BarraBusqueda, 
+    InputSearch, 
+    PosCenter, 
+    PosInitial, 
+    Tags, 
+    DivBusqueda 
+} from '../../styled/pages/home';
+import { Container } from '../../styled/globals';
 
 interface Props{
     data: InterfaceImages;

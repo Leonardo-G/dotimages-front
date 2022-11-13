@@ -22,7 +22,7 @@ export const Portada:FC<Props> = ({ height, media, description, type }) => {
     if ( type === "video" ) {
         return (
             <ContainerImage height={ height }>
-                <video 
+                <video
                     src={ media }
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     autoPlay

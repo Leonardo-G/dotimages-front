@@ -11,15 +11,24 @@ const Section = styled.section`
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+    column-gap: 15px;
+    width: 100%;
+    
+    @media ( max-width: 720px ){
+        column-gap: 5px;
+        .row-3{
+            display: none;
+        }
+    }
 `
 
 interface Props {
     media: InterfaceImage[] | any[] | IGifsShort[];
-    type: "image" | "videos" | "gifs" | "sticker";
+    type: "image" | "videos" | "gifs" | "stickers";
     widthAuto?: boolean;
 }
 
-export const Images: FC<Props> = ({ media, type, widthAuto }) => {
+export const Images: FC<Props> = ({ media, type, widthAuto = false }) => {
 
     return (
         <Container className='container'>
@@ -53,7 +62,7 @@ export const Images: FC<Props> = ({ media, type, widthAuto }) => {
                         ))
                     }
                 </div>
-                <div>
+                <div className='row-3'>
                     {                        
                         media.filter(( m, idx) => idx >= 20 && idx < 30 ).map( i => (
                             <ImageSize 

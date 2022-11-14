@@ -1,5 +1,9 @@
 import React, { FC } from 'react'
-import { BtnRegistro, EnlaceColumn, EnlaceP } from '../../styled/nav/navigation';
+import { 
+    BtnRegistro, 
+    EnlaceColumn,
+    EnlaceP 
+} from '../../styled/nav/navigation';
 
 interface Props { 
     responsive?: boolean;
@@ -11,21 +15,23 @@ interface Props {
 export const NavLogin: FC<Props> = ({ responsive, handleShowLogin, handleShowRegister, setOpenNavResponsive }) => {
     
     if ( responsive ) {
-        <>
-            <EnlaceColumn onClick={ () => {
-                handleShowLogin()
-                setOpenNavResponsive(false);
-            } }>
-                <p>Iniciar Sesión</p>
-            </EnlaceColumn>
+        return (
+            <>
+                <EnlaceColumn onClick={ () => {
+                    handleShowLogin()
+                    setOpenNavResponsive(false);
+                } }>
+                    <p>Iniciar Sesión</p>
+                </EnlaceColumn>
 
-            <BtnRegistro onClick={ () => {
-                handleShowRegister();
-                setOpenNavResponsive(false);
-            } }>
-                <p>Registrarse</p>
-            </BtnRegistro>
-        </>
+                <BtnRegistro onClick={ () => {
+                    handleShowRegister();
+                    setOpenNavResponsive(false);
+                } }>
+                    <p>Registrarse</p>
+                </BtnRegistro>
+            </>
+        )
     }
 
     return (

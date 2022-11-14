@@ -111,6 +111,10 @@ export const NavButtonResponsive= styled.div`
     font-size: 25px;
     color: #222C40;
     cursor: pointer;
+
+    @media (min-width: 1080px){
+        display: none;
+    }
 `
 
 export const NavResponsive = styled.div`

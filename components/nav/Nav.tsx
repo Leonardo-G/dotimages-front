@@ -2,7 +2,11 @@ import React, { useContext, useState } from 'react';
 
 import { AuthContext } from '../../context/auth/AuthContext';
 import { UIContext } from '../../context/UI/UIContext';
+
 import { Login } from '../form/Login';
+import { UserNav } from './UserNav';
+import { NavLogin } from './NavLogin';
+import { LinkContainer } from './LinkContainer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -17,9 +21,6 @@ import {
     Navigation, 
     NavResponsive, 
 } from '../../styled/nav/navigation';
-import { UserNav } from './UserNav';
-import { NavLogin } from './NavLogin';
-import { LinkContainer } from './LinkContainer';
 
 export const Nav = () => {
 

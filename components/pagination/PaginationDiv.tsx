@@ -3,9 +3,15 @@ import React, { FC } from 'react'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { IconPage, NextPageStyle, Page, PaginationStyle } from '../../styled/pages/home'
 import { Pagination } from '../../interface/gifs'
 import { arrayPage } from '../../utils/arrayPage'
+
+import { 
+    IconPage, 
+    NextPageStyle, 
+    Page, 
+    PaginationStyle 
+} from '../../styled/pages/home'
 
 interface Props {
     pagination: Pagination;

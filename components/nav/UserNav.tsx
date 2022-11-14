@@ -1,8 +1,15 @@
+import React, { FC } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { FC } from 'react'
+
 import { IUser } from '../../interface/user';
-import { UserContainer, User, EnlaceColumn, Enlace } from '../../styled/nav/navigation';
+
+import {
+    UserContainer, 
+    User, 
+    EnlaceColumn, 
+    Enlace 
+} from '../../styled/nav/navigation';
 
 interface Props {
     responsive?: boolean;

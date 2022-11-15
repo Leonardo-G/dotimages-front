@@ -1,34 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DOTImages | Front
 
-## Getting Started
+Aplicación realizado con Next/React, para explorar imagenes, videos, gifs y stickers que se consultó con [la API del backend](https://github.com/Leonardo-G/dotimage-back). Para obtener los archivos medias se consultó en la API de GIPHY y PIXABAY.
 
-First, run the development server:
+### Instalación
 
-```bash
-npm run dev
-# or
-yarn dev
+Una vez clonado el repositorio o descargado el los archivos del repositorio, para poder iniciar la aplicación en tu entorno local, hay que instalar las dependencias necesarias con:
+
+```
+npm install
+```
+Una vez instalado, crear el archivo .ENV y reemplazar las variables del archivo .env.example al archivo .ENV y completarlos. Ahora si, podemos correr la aplicación en un servidor local con:
+```
+node app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Herramientas utilizadas para crear este proyecto.
+- next:         Marco web de desarrollo de React: V12.3.1.
+- js-cookie:    Para el manejo de las Cookies: V3.0.1.
+- styled-components: Codigo CSS en Javascript: V5.3.6. 

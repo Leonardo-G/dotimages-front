@@ -1,5 +1,5 @@
 import { IUser } from "../../interface/user";
-import { AuthState } from "./AuthProvider"
+import { AuthState } from "../../interface/user"
 
 import { 
     IErrorLogin,

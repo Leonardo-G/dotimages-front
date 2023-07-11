@@ -13,6 +13,7 @@ import { FavoritesContext } from './FavoritesContext';
 import { favoritesReducer } from './favoritesReducer'
 import { fetchApiBackend } from '../../utils/fetchApi';
 import { removeStorageUser } from '../../utils/storage';
+import { pathsApi } from '../../common/path';
 
 const INITIAL_STATE: FavoritesState = {
     favorites: []
@@ -35,7 +36,7 @@ export const FavoriteProvider: FC<Props> = ({ children }) => {
 
     const addFavorite = async ( favorite: IFavorites ) => {
         try {
-            const results = await fetchApiBackend( "POST", "favorite/new", favorite, Cookies.get("user") );
+            const results = await fetchApiBackend( "POST", pathsApi.favorites, favorite, Cookies.get("user") );
             dispatch( addFavoriteAction( results as IFavorites ) );
             
         } catch (error) {
@@ -46,7 +47,7 @@ export const FavoriteProvider: FC<Props> = ({ children }) => {
     const removeFavorite = async ( idFavorite: string ) => {
         
         try {
-            await fetchApiBackend( "DELETE", `favorite/${ idFavorite }`, {}, Cookies.get("user") );
+            await fetchApiBackend( "DELETE", `${ pathsApi.favorites }/${ idFavorite }`, {}, Cookies.get("user") );
             dispatch( removeFavoriteAction( `${ idFavorite }` ) );
             
         } catch (error) {
@@ -57,7 +58,7 @@ export const FavoriteProvider: FC<Props> = ({ children }) => {
 
     const addAllFavorites = async () => {
         try {
-            const results = await fetchApiBackend( "GET", "favorite/", {}, Cookies.get("user") );
+            const results = await fetchApiBackend( "GET", pathsApi.favorites, {}, Cookies.get("user") );
             dispatch( addAllFavoritesAction( results as IFavorites[] ) );
             
         } catch (error) {

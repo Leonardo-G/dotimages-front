@@ -9,6 +9,7 @@ import { fetchApiBackend } from '../../utils/fetchApi';
 
 import { Container } from '../../styled/globals';
 import { ISaved } from '../../interface/saved';
+import { pathsApi } from '../../common/path';
 
 interface Props {
     media: ISaved[];
@@ -49,7 +50,17 @@ const SavedPage: NextPage<Props> = ({ media }) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const token = req.cookies.user;
-    const data = await fetchApiBackend("GET", "saved/", {}, token) as ISaved[];
+    
+    if( !token ) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/'
+            }
+        }
+    }
+    
+    const data = await fetchApiBackend("GET", pathsApi.saved, {}, token) as ISaved[];
     const media = data.map( d => ({
         id: d.savedId,
         type: d.type,

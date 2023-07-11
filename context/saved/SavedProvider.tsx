@@ -12,6 +12,7 @@ import {
     removeSavedAction 
 } from '../../actions/savedAction';
 import { SavedContext } from './SavedContext';
+import { pathsApi } from '../../common/path';
 
 const INITIAL_STATE: SavedState = {
     saved: []
@@ -34,7 +35,7 @@ export const SavedProvider: FC<Props> = ({ children }) => {
 
     const addSaved = async ( saved: ISaved ) => {
         try {
-            const results = await fetchApiBackend( "POST", "saved/new", saved, Cookies.get("user") );
+            const results = await fetchApiBackend( "POST", pathsApi.saved, saved, Cookies.get("user") );
             dispatch( addSavedAction( results as ISaved ) );
             
         } catch (error) {
@@ -45,7 +46,7 @@ export const SavedProvider: FC<Props> = ({ children }) => {
     const removeSaved = async ( idSaved: string ) => {
         
         try {
-            await fetchApiBackend( "DELETE", `saved/${ idSaved }`, {}, Cookies.get("user") );
+            await fetchApiBackend( "DELETE", `${ pathsApi.saved }/${ idSaved }`, {}, Cookies.get("user") );
             dispatch( removeSavedAction( `${ idSaved }` ) );
             
         } catch (error) {
@@ -56,9 +57,8 @@ export const SavedProvider: FC<Props> = ({ children }) => {
 
     const addAllSaved = async () => {
         try {
-            const results = await fetchApiBackend( "GET", "saved/", {}, Cookies.get("user") );
+            const results = await fetchApiBackend( "GET", pathsApi.saved, {}, Cookies.get("user") );
             dispatch( addAllSavedAction( results as ISaved[] ) );
-            console.log(results);
         } catch (error) {
             removeStorageUser();
             console.log(error);

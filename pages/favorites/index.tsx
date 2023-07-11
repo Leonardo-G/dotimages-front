@@ -9,6 +9,7 @@ import { fetchApiBackend } from '../../utils/fetchApi';
 
 import { Container } from '../../styled/globals';
 import styled from 'styled-components';
+import { pathsApi } from '../../common/path';
 
 interface Props {
     media: IFavorites[];
@@ -49,7 +50,17 @@ const FavoritesPage: NextPage<Props> = ({ media }) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const token = req.cookies.user;
-    const data = await fetchApiBackend("GET", "favorite/", {}, token) as IFavorites[];
+    
+    if( !token ) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/'
+            }
+        }
+    }
+
+    const data = await fetchApiBackend("GET", pathsApi.favorites, {}, token) as IFavorites[];
     const media = data.map( d => ({
         id: d.favoriteId,
         type: d.type,

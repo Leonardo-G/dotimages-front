@@ -116,7 +116,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         dispatch( loadingUserAction() );
 
         try {
-            const userRegister = await fetchApiBackend("POST", "user/new-user", {
+            const userRegister = await fetchApiBackend("POST", pathsApi.authRegister, {
                 name: user.name,
                 email: user.email,
                 password: user.password
@@ -138,7 +138,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
     const validateToken = async ( token: string ) => {
         try {
-            const user = await fetchApiBackend("POST", "user/validate-token", {}, token);
+            const user = await fetchApiBackend("POST", pathsApi.authValidate, {}, token);
             
             const userObject = insertStorageUser( user as IUserApi );
             dispatch( loginUserAction(userObject) );

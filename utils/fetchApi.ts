@@ -37,7 +37,7 @@ export const fetchApiBackend = ( method: "POST" | "GET" | "DELETE", url: string,
     }
 
     return new Promise ( async ( resolve, reject ) => {
-        const results = await fetch( `${ process.env.NEXT_PUBLIC_API_BACKEND_URL }/api/${ url }`, options )
+        const results = await fetch( `${ process.env.NEXT_PUBLIC_API_BACKEND_URL }/${ url }`, options )
         const response = await results.json();
             
         if ( !results.ok ){

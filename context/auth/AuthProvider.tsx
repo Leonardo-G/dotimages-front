@@ -33,6 +33,7 @@ import {
     insertStorageUser, 
     removeStorageUser 
 } from '../../utils/storage';
+import { pathsApi } from '../../common/path';
 
 const INITIAL_STATE: AuthState = {
     isAuthenticated: false,
@@ -88,7 +89,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         dispatch( loadingUserAction() );
 
         try {
-            const user = await fetchApiBackend("POST", "user/login", {
+            const user = await fetchApiBackend("POST", pathsApi.authLogin, {
                 email,
                 password
             })
